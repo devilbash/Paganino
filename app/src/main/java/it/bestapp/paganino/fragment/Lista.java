@@ -18,18 +18,26 @@ import android.widget.ListView;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.gc.materialdesign.views.ProgressBarIndeterminate;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
 import it.bestapp.paganino.fragment.adapter.BustaPaga;
 import it.bestapp.paganino.fragment.adapter.BustaPagaAdapter;
+import it.bestapp.paganino.fragment.adapter.Info;
+import it.bestapp.paganino.utility.connessione.HRConnect;
+import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
+import it.bestapp.paganino.utility.connessione.thread.ThreadHome;
+import it.bestapp.paganino.utility.db.DataBaseAdapter;
 
 
-public class Lista extends Fragment implements Frag{
+public class Lista extends Fragment implements PageDownloadedInterface {
     private Activity act;
     private ListView grpView;
 
+    private List<Info> list;
 
     private static final int REQUEST_CODE_SETTINGS = 0;
 
@@ -39,8 +47,13 @@ public class Lista extends Fragment implements Frag{
     private BustaPagaAdapter adapter;
     private List<BustaPaga> data;
     private SwipeListView swpLstView;
+    private LinkedHashMap lista = null;
+    private List<Info> infos;
 
 
+    private DataBaseAdapter dataBA = null;
+
+    private HRConnect conn = null;
 
     @Override
     public void onAttach(Activity activity) {
@@ -52,13 +65,21 @@ public class Lista extends Fragment implements Frag{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fra_lista, container, false);
         setHasOptionsMenu(true);
+        adapter = new BustaPagaAdapter(act);
+
+
+
+        conn = new HRConnect();
+        dataBA = new DataBaseAdapter( act);
+        dataPrepare();
+
+
 
         swpLstView = (SwipeListView) rootView.findViewById(R.id.swipList);
         swpRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_swipe);
         pBar       = (ProgressBarIndeterminate) rootView.findViewById(R.id.progressBar);
 
 
-        final BustaPagaAdapter adapter = new BustaPagaAdapter(act);
         swpLstView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             swpLstView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -128,22 +149,22 @@ public class Lista extends Fragment implements Frag{
         }*/
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.main, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings: {
-                ((Main) act).onNavigationDrawerItemSelected(1);
-                break;
+
+    private void dataPrepare() {
+        dataBA.open();
+        list = dataBA.getAllBuste();
+        dataBA.close();
+        if (list.size() == 0 ){
+            ThreadHome tDoc = null;
+            try {
+                (new ThreadHome(this, conn, "10687556", "!omabA09")).execute();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        return super.onOptionsItemSelected(item);
     }
+
 
     private void setup(SwipeListView swpLst) {
         swpLst.setSwipeMode(SwipeListView.SWIPE_MODE_RIGHT);
@@ -151,4 +172,22 @@ public class Lista extends Fragment implements Frag{
         swpLst.setSwipeOpenOnLongPress(false);
     }
 
+    @Override
+    public void onHomeDownloaded(boolean x) {
+
+    }
+
+    @Override
+    public void onListaDownloaded(LinkedHashMap<String, String> l) {
+        adapter.getList().clear();
+
+        for (Map.Entry entry : l.entrySet()) {
+            // creo busta Paga
+            BustaPaga bP = new BustaPaga((String) entry.getKey(),
+                    (String) entry.getValue());
+
+            adapter.add(bP);
+        }
+        adapter.notifyDataSetChanged();
+    }
 }

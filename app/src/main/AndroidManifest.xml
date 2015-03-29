@@ -20,6 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".Impostazioni"
+            android:parentActivityName="it.bestapp.paganino.Main" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.bestapp.paganino.Main" />
+        </activity>
+
     </application>
 
 </manifest>
