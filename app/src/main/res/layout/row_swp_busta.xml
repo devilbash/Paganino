@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/back"
+        android:tag="back"
+        style="@style/ListBackContent"
+        android:weightSum="1">
+
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:id="@+id/front"
+        android:tag="front"
+        style="@style/ListFrontContent">
+
+
+
+        <TextView
+            android:id="@+id/listMese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/testoMese" >
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/listAnno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/listMese"
+            android:layout_below="@id/listMese"
+            android:textSize="@dimen/testoAnno" >
+        </TextView>
+
+        <CheckBox
+            android:id="@+id/checkScarica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageStatus"
+            android:layout_alignParentRight="true" />
+
+        <ImageView
+            android:id="@+id/imageVisualizza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageScarica"
+            android:layout_alignTop="@+id/checkScarica"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/imageScarica"
+            android:src="@drawable/pdf" />
+
+        <ImageView
+            android:id="@+id/imageScarica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/listMese"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/imageStatus"
+            android:src="@drawable/dischetto" />
+
+        <ImageView
+            android:id="@+id/imageStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageScarica"
+            android:layout_alignTop="@+id/imageScarica"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/checkScarica"
+            android:src="@drawable/grafico" />
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>
