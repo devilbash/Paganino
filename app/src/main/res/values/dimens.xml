@@ -25,5 +25,7 @@
     <dimen name="padding_new_tag">3dp</dimen>
 
 
+    <dimen name="testoMese">18dp</dimen>
+    <dimen name="testoAnno">16dp</dimen>
 
 </resources>
