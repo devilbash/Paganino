@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="MESI">
+        <item>Gennaio</item>
+        <item>Febbraio</item>
+        <item>Marzo</item>
+        <item>Aprile</item>
+        <item>Maggio</item>
+        <item>Giugno</item>
+        <item>Luglio</item>
+        <item>Agosto</item>
+        <item>Settembre</item>
+        <item>Ottobre</item>
+        <item>Novembre</item>
+        <item>Dicembre</item>
+        <item>Tredicesima</item>
+    </array>
+
+    <string-array name="TITOLICARD">
+        <item>Notifiche</item>
+        <item>Aggiornamenti</item>
+        <item>Salvataggio</item>
+    </string-array>
+
+
+    <string-array name="TITOLIMENU">
+        <item>Cambia password</item>
+        <item>Scarica CUD</item>
+        <item>Grafico Andamento</item>
+        <item>Excel Andamento</item>
+    </string-array>
+
+
+</resources>

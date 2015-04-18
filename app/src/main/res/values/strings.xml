@@ -2,27 +2,33 @@
 <resources>
 
     <string name="app_name">Paganino</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="action_settings_d">Settings_d</string>
 
     <string name="action_settings">Settings</string>
 
+
+    <string name="settings">Impostazioni</string>
+    <string name="notiche">NOTIFICA</string>
+    <string name="timer_giorno">GIORNO</string>
+    <string name="initgiorno">27</string>
+    <string name="timer_ora">ORA</string>
+    <string name="allarme">Allarme</string>
+    <string name="sync">Ricevi aggiornamenti Automatici</string>
+    <string name="drive">Archivia su Google DRIVE</string>
+
+
+
+<!--
+    <string name="cantOpen">Can\'t open this application</string>
     <string name="appName">SwipeListView Demo</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings_d">Settings_d</string>
     <string name="open">Open</string>
     <string name="googlePlay">Google Play</string>
     <string name="uninstall">Uninstall</string>
-
-    <string name="cantOpen">Can\'t open this application</string>
-    <string name="settings">Impostazioni</string>
-    <string name="notiche">Notiche Allenamento</string>
-    <string name="timer">Attiva timer riposo</string>
-    <string name="allarme">Allarme</string>
-    <string name="attivo">Rimani attivo</string>
-    <string name="sincronizza">Sincronizza ora</string>
     <string name="elimina">Elimina storico allenamenti</string>
     <string name="avatar">Imposta avatar</string>
     <string name="disconnetti">Disconnetti</string>
@@ -38,38 +44,31 @@
 
     <string name="loading">Loading</string>
 
-    <string name="newTag">New!</string>
-    <string name="discard">Salta</string>
 
 
 
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="connesso">Rimani Connesso</string>
     <string name="action_sign_in">Login</string>
     <string name="action_sign_in_short">Sign in</string>
-
+-->
+    <string name="connesso">Rimani Connesso</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="nuova_stringa">nuova_stringa</string>
 
 
-    <array name="mesi">
-        <item>Gennaio</item>
-        <item>Febbraio</item>
-        <item>Marzo</item>
-        <item>Aprile</item>
-        <item>Maggio</item>
-        <item>Giugno</item>
-        <item>Luglio</item>
-        <item>Agosto</item>
-        <item>Settembre</item>
-        <item>Ottobre</item>
-        <item>Novembre</item>
-        <item>Dicembre</item>
-        <item>Tredicesima</item>
-    </array>
+
+    <string name="archivia">Archivia</string>
+
+
+    <string name="search_hint">Cerca</string>
+
+
+    <string name="newTag">New!</string>
+
+
+
 
 </resources>

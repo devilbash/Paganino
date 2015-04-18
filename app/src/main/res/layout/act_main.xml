@@ -25,7 +25,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:name="it.bestapp.paganino.utility.menu.NavigationDrawerFragment"
+            android:name="it.bestapp.paganino.fragment.NavigationDrawerFragment"
             tools:layout="@layout/drawer" />
 
     </android.support.v4.widget.DrawerLayout>
