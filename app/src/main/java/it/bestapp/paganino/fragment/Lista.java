@@ -165,6 +165,9 @@ public class Lista extends Fragment
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            case 'S':   //scarica
+
+                break;
             case 'D':   //drive
                 ((Main) act).pushFile(f, bP);
                 break;
