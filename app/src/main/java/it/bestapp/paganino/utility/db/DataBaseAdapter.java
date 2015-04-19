@@ -99,55 +99,6 @@ public class DataBaseAdapter {
 	}
 
 
-    /*
-    public void insertDWLD(String id, String data) {
-        String[] values = data.split(",");
-
-        ContentValues newValues = new ContentValues();
-        newValues.put("ID", id);
-        newValues.put("DATA",  values[0]);
-        newValues.put("CLOUD", Integer.parseInt(values[1]));
-        newValues.put("DWNLD", Integer.parseInt(values[2]));
-        newValues.put("GRAFI", Integer.parseInt(values[3]));
-     db.insert("BUSTA_DWLD", null, newValues);
-    }
-    /*
-    public HashMap<String, BustaPagaDWLD> getAllDWLD() {
-        HashMap<String, BustaPagaDWLD> list = new HashMap<String, BustaPagaDWLD>();
-
-        int x;
-        String data;
-        boolean c;
-        boolean a;
-        boolean d;
-        BustaPagaDWLD store;
-
-        Cursor cursor = db.query("BUSTA_DWLD", null, null, null, null, null, null);
-        if (cursor.getCount() < 1)
-            return null;
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-
-                    data = cursor.getString(cursor.getColumnIndex("DATA"));
-
-                    x = cursor.getInt(cursor.getColumnIndex("CLOUD"));
-                    c =	(x == 1)? true : false;
-                    x = cursor.getInt(cursor.getColumnIndex("DWNLD"));
-                    d =	(x == 1)? true : false;
-                    x = cursor.getInt(cursor.getColumnIndex("GRAFI"));
-                    a =	(x == 1)? true : false;
-                    store = new BustaPagaDWLD(data, c,a,d );
-
-                    list.put(cursor.getString(cursor.getColumnIndex("ID")),store);
-                } while (cursor.moveToNext());
-            }
-        }
-        cursor.close();
-        return list;
-    }
-    */
 	public void insertBusta(Info i) {
 		ContentValues newValues = new ContentValues();
 		// Assign values for each column.
@@ -188,59 +139,24 @@ public class DataBaseAdapter {
 		cursor.close();
 		return list;
 	}
-	
-	public float[] getOre(String chiave) {
-		String id = null;
-		float[] ore = null ;
-		String[] whereArgs = new String[] {chiave};
-	
-		Cursor cursor = db.query("ORE", null, " ID =? " , whereArgs , null, null, null);
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				ore = new float[9] ; 
-				do {
-					id      = cursor.getString(cursor.getColumnIndex("ID"));
-					ore[0]  = cursor.getFloat(cursor.getColumnIndex("F_SP"));
-					ore[1]	= cursor.getFloat(cursor.getColumnIndex("F_GO"));
-					ore[2]  = cursor.getFloat(cursor.getColumnIndex("F_RE"));
-					ore[3]  = cursor.getFloat(cursor.getColumnIndex("R_SP"));
-					ore[4]  = cursor.getFloat(cursor.getColumnIndex("R_GO"));
-					ore[5]  = cursor.getFloat(cursor.getColumnIndex("R_RE"));
-					ore[6]  = cursor.getFloat(cursor.getColumnIndex("B_SP"));
-					ore[7]  = cursor.getFloat(cursor.getColumnIndex("B_GO"));
-					ore[8]  = cursor.getFloat(cursor.getColumnIndex("B_RE"));
- 				} while (cursor.moveToNext());
-			}
-		}
-		cursor.close();
-		return ore;
-	}
 
-	public void setOre(String id, float ore []) {
-		ContentValues newValues = new ContentValues();
-		// Assign values for each column.
-	
-		newValues.put("ID", id);
-		newValues.put("F_SP", ore[0]);
-		newValues.put("F_GO", ore[1]);
-		newValues.put("F_RE", ore[2]);
-		newValues.put("R_SP", ore[3]);
-		newValues.put("R_GO", ore[4]);
-		newValues.put("R_RE", ore[5]);
-		newValues.put("B_SP", ore[6]);
-		newValues.put("B_GO", ore[7]);
-		newValues.put("B_RE", ore[8]);
 
-		db.insert("ORE", null, newValues);
-	}	
 
-	
-	public void disconnetti() {
-		db.delete("CONFIG", null, null);
-		db.delete("ORE", null, null);
-		db.delete("BUSTA_PAGA", null, null);
-	}
-	
-	
-	
+    public Info getBusta(String id) {
+        SQLiteDatabase db = this.getDatabaseInstance();
+        Cursor c = db.rawQuery("SELECT ID,LORDO,LORDO_BASE,RITENUTE,TOTALE FROM BUSTA_PAGA WHERE name = ?",
+                new String[] {id});
+        Info i = null;
+        if(c.moveToFirst()){
+            do{
+                i = new Info(id,
+                        c.getFloat(c.getColumnIndex("LORDO")),
+                        c.getFloat(c.getColumnIndex("LORDO_BASE")),
+                        c.getFloat(c.getColumnIndex("RITENUTE")),
+                        c.getFloat(c.getColumnIndex("TOTALE"))     );
+            }while(c.moveToNext());
+        }
+        c.close();
+        return i;
+    }
 }

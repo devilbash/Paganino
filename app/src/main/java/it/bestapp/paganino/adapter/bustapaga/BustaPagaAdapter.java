@@ -102,27 +102,25 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 			meseTextView.setText(bPaga.getMese());
 			annoTextView.setText(bPaga.getAnno());
 
+
+            scarica.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    (new ThreadPDF(frag, conn, bPaga, 'S')).execute();
+                }
+            });
+
+            grafico.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    (new ThreadPDF(frag, conn, bPaga, 'G')).execute();
+                }
+            });
+
 			drive.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
                     (new ThreadPDF(frag, conn, bPaga, 'D')).execute();
-				}
-			});
-/*
-			grafico.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					HRConnect conn = ((Main) act).getConnect();
-					ThreadDownloadPDF tPDF = new ThreadDownloadPDF(act, conn,
-							PageDownloadedInterface.ANALIZZA, bPaga);
-					tPDF.execute();
-				}
-			});
-*/
-			scarica.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-                    (new ThreadPDF(frag, conn, bPaga, 'S')).execute();
 				}
 			});
 

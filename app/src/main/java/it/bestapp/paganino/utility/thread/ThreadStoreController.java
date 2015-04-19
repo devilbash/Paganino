@@ -122,6 +122,6 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void param) {
         pCall.procesDialog(false);
-        pCall.onStoreCompleted();
+        pCall.onStoreCompleted(buste);
     }
 }

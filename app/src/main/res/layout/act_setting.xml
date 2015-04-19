@@ -1,0 +1,232 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <include layout="@layout/toolbar" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardElevation="4dp">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.gc.materialdesign.views.ButtonFlat
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/notifica"
+                                android:text="@string/notiche"
+                                android:layout_gravity="center" />
+
+                            <com.gc.materialdesign.views.Switch
+                                android:id="@+id/swNoti"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#1E88E5" />
+                        </TableRow>
+                        <TableLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:orientation="vertical"
+                            android:id="@+id/subriga">
+
+                            <TableRow>
+                                <com.gc.materialdesign.views.ButtonFlat
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/notificaDate"
+                                    android:text="@string/timer_giorno"
+                                    android:layout_weight="0"
+                                    android:layout_gravity="center_vertical" />
+                                <TextView
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/giorno"
+                                    android:layout_weight="1"/>
+                            </TableRow>
+                            <TableRow>
+                                <com.gc.materialdesign.views.ButtonFlat
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/notificaTime"
+                                    android:text="@string/timer_ora"
+                                    android:layout_weight="0"
+                                    android:layout_gravity="center_horizontal" />
+
+                                <TextView
+                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/ora"
+                                    android:layout_weight="1"/>
+                            </TableRow>
+                        </TableLayout>
+                    </TableLayout>
+                </android.support.v7.widget.CardView>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardElevation="4dp">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.gc.materialdesign.views.ButtonFlat
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/setpath"
+                                android:text="Percorso file"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical" />
+                            <TextView
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/path"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical" />
+                        </TableRow>
+                        <TableRow>
+                            <com.gc.materialdesign.views.ButtonFlat
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/esci"
+                                android:text="Esci profilo"
+                                android:layout_weight="1" />
+                        </TableRow>
+                    </TableLayout>
+                </android.support.v7.widget.CardView>
+            </FrameLayout>
+
+
+
+
+
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardElevation="4dp">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#1E88E5"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/sync"
+                                android:textStyle="bold" />
+                            <com.gc.materialdesign.views.Switch
+                                android:id="@+id/setSync"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#1E88E5"
+                                android:layout_weight="0" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#1E88E5"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/drive"
+                                android:textStyle="bold" />
+                            <com.gc.materialdesign.views.Switch
+                                android:id="@+id/setDrive"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#1E88E5"
+                                android:layout_weight="0" />
+                        </TableRow>
+
+
+                    </TableLayout>
+                </android.support.v7.widget.CardView>
+            </FrameLayout>
+
+
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -5,7 +5,10 @@ package it.bestapp.paganino.utility.connessione;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
+import it.bestapp.paganino.adapter.bustapaga.Info;
 
 
 public interface PageDownloadedInterface {
@@ -16,7 +19,8 @@ public interface PageDownloadedInterface {
 	public static final int SCARICA 	= 4;
 	
 	public void onPDFDownloaded(BustaPaga b, File f, char mode);
-    public void onStoreCompleted();
+    public void onPDFDownloaded(Info i, char mode);
+    public void onStoreCompleted(List<BustaPaga> buste);
 	public void onListaDownloaded(ArrayList<String> lista);
 
     public void procesDialog(boolean b);

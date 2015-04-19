@@ -34,6 +34,7 @@ import java.util.List;
 
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
+import it.bestapp.paganino.adapter.bustapaga.Info;
 import it.bestapp.paganino.dialog.LoginDialog;
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
 import it.bestapp.paganino.adapter.bustapaga.BustaPagaAdapter;
@@ -171,8 +172,14 @@ public class Lista extends Fragment
             case 'D':   //drive
                 ((Main) act).pushFile(f, bP);
                 break;
-            case 'E':   //excel
+        }
+    }
+    @Override
+    public void onPDFDownloaded(Info i, char mode) {
+        swpLstView.closeOpenedItems();
 
+        switch (mode) {
+            case 'E':   //excel
 
                 break;
             case 'G':   //grafico
@@ -180,6 +187,10 @@ public class Lista extends Fragment
                 break;
         }
     }
+
+
+
+
     @Override
     public void onResume(){
         super.onResume();
@@ -187,7 +198,7 @@ public class Lista extends Fragment
     }
 
     @Override
-    public void onStoreCompleted() {
+    public void onStoreCompleted(List<BustaPaga> buste) {
 
     }
 
