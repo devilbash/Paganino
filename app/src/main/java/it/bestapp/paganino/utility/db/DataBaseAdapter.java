@@ -144,8 +144,14 @@ public class DataBaseAdapter {
 
     public Info getBusta(String id) {
         SQLiteDatabase db = this.getDatabaseInstance();
-        Cursor c = db.rawQuery("SELECT ID,LORDO,LORDO_BASE,RITENUTE,TOTALE FROM BUSTA_PAGA WHERE name = ?",
-                new String[] {id});
+        Cursor c = null;
+        try {
+            c = db.rawQuery("SELECT * FROM BUSTA_PAGA WHERE ID = ?",
+                    new String[]{id});
+        } catch ( Exception e){
+            e.printStackTrace();
+        }
+
         Info i = null;
         if(c.moveToFirst()){
             do{

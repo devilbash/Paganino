@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.bestapp.paganino.Charts;
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
 import it.bestapp.paganino.adapter.bustapaga.Info;
@@ -83,8 +84,6 @@ public class Lista extends Fragment
         swpLstView = (SwipeListView) rootView.findViewById(R.id.swipList);
         swpRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh_swipe);
         swpLstView.addSwipeRefresh(swpRefresh);
-
-
 
         swpLstView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -183,17 +182,18 @@ public class Lista extends Fragment
 
                 break;
             case 'G':   //grafico
-
+                Intent intent = new Intent( act, Charts.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }
 
 
 
-
     @Override
     public void onResume(){
-        super.onResume();
+       super.onResume();
         swpLstView.deferNotifyDataSetChanged();
     }
 

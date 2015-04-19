@@ -6,6 +6,7 @@ import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.setting.SettingsManager;
+import it.bestapp.paganino.utility.thread.ThreadAnaPDF;
 import it.bestapp.paganino.utility.thread.ThreadPDF;
 
 import java.net.HttpCookie;
@@ -113,7 +114,7 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
             grafico.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    (new ThreadPDF(frag, conn, bPaga, 'G')).execute();
+                    (new ThreadAnaPDF(frag, conn, bPaga, 'G')).execute();
                 }
             });
 
