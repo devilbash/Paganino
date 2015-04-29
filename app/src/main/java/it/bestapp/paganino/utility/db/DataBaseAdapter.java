@@ -13,9 +13,9 @@ import android.database.sqlite.SQLiteDatabase;
 import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.utility.db.bin.Ore;
 import it.bestapp.paganino.utility.db.bin.Voci;
-import it.bestapp.paganino.utility.db.dao.IBustaDAO;
-import it.bestapp.paganino.utility.db.dao.IOreDAO;
-import it.bestapp.paganino.utility.db.dao.IVociDAO;
+import it.bestapp.paganino.utility.db.DAO.IBustaDAO;
+import it.bestapp.paganino.utility.db.DAO.IOreDAO;
+import it.bestapp.paganino.utility.db.DAO.IVociDAO;
 
 public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
 
