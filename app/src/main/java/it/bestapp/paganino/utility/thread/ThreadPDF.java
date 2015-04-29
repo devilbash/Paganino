@@ -1,16 +1,9 @@
 package it.bestapp.paganino.utility.thread;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 
-
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
-import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
-import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +12,6 @@ import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
-import it.bestapp.paganino.utility.db.DataBaseAdapter;
-import it.bestapp.paganino.utility.parser.BustaPagaParser;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
 

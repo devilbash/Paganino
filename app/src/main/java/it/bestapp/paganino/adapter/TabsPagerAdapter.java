@@ -1,124 +1,61 @@
 package it.bestapp.paganino.adapter;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Handler;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
+import java.util.Locale;
+
+import it.bestapp.paganino.Charts;
 import it.bestapp.paganino.R;
+import it.bestapp.paganino.fragment.ChartFragment;
+
+/**
+ * Created by marco.compostella on 26/04/2015.
+ */
+public class TabsPagerAdapter extends FragmentStatePagerAdapter {
+
+    private Charts charts;
+    private ChartFragment[] frags;
 
 
-
-public class TabsPagerAdapter extends PagerAdapter {
-    private final Activity act;
-    final Handler myHandler = new Handler();
-    private WebView wv;
-
-
-    public TabsPagerAdapter(Activity a) {
-        act = a;
+    public TabsPagerAdapter(Charts c, FragmentManager fm) {
+        super(fm);
+        this.charts = c;
+        frags = new ChartFragment[4];
     }
 
+    @Override
+    public Fragment getItem(int index) {
+        if (frags[index] != null)
+            return frags[index];
 
-
+        frags[index] = ChartFragment.newInstance(index);
+        return frags[index];
+    }
 
     @Override
     public int getCount() {
-        return 4;
+        return frags.length;
     }
-
-
-    @Override
-    public boolean isViewFromObject(View view, Object o) {
-        return o == view;
-    }
-
 
     @Override
     public CharSequence getPageTitle(int position) {
-        String title ="";
+        Locale l = Locale.getDefault();
+        String [] titoli = charts.getResources().getStringArray(R.array.TITOLIPAGER);
 
         switch (position) {
             case 0:
-                title ="Stipendio";
-                break;
+                return titoli[0].toUpperCase(l);
             case 1:
-                title ="Ferie";
-                break;
+                return titoli[1].toUpperCase(l);
             case 2:
-                title ="ROL";
-                break;
+                return titoli[2].toUpperCase(l);
             case 3:
-                title ="Banca ORE";
-                break;
+                return titoli[3].toUpperCase(l);
         }
-        return title;
+        return null;
     }
-
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        // Inflate a new layout from our resources
-        View view = act.getLayoutInflater().inflate(R.layout.pgr_chart, container, false);
-        container.addView(view);
-
-
-        wv = (WebView) view.findViewById(R.id.wview);
-
-
-        final JSJavaBridge apiJS
-                = new JSJavaBridge( act.getApplicationContext());
-        wv.getSettings().setLoadWithOverviewMode(true);
-        wv.getSettings().setUseWideViewPort(true);
-        wv.getSettings().setJavaScriptEnabled(true);
-        wv.addJavascriptInterface(apiJS, "API");
-        wv.loadUrl("file:///android_asset/www/paga.html");
-
-
-        // Return the View
-        return view;
-    }
-
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
-    }
-
-
-
-    public class JSJavaBridge {
-        Context mContext;
-
-        JSJavaBridge( Context c) {
-            mContext = c;
-        }
-
-        @JavascriptInterface
-        public void showPlot(){
-            myHandler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
-        }
-        @JavascriptInterface
-        public void showDialog(String str, String perc){
-            myHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                }
-            });
-        }
-    }
-
-
-
 }
-
-

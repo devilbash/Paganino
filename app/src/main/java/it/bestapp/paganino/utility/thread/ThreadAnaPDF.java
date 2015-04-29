@@ -14,16 +14,17 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.adapter.bustapaga.Info;
+import it.bestapp.paganino.utility.db.Info;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
 import it.bestapp.paganino.utility.db.DataBaseAdapter;
+import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.utility.parser.BustaPagaParser;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
 
-public class ThreadAnaPDF extends AsyncTask<Void, Void, Info> {
+public class ThreadAnaPDF extends AsyncTask<Void, Void, Busta> {
 
     private Fragment frag = null;
     private HRConnect con = null;
@@ -58,17 +59,16 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, Info> {
     }
 
     @Override
-    public Info doInBackground(Void... params) {
+    public Busta doInBackground(Void... params) {
         int count;
         InputStream in;
         FileOutputStream out = null;
 
-
         dataBA.open();
-        Info info =dataBA.getBusta(bPaga.getID());
+        Busta busta = dataBA.getSingleBusta(bPaga.getID());
         dataBA.close();
 
-        if (info != null) return info;
+        if (busta != null) return busta;
 
         File  f = new File(path , bPaga.getID() + ".pdf");
         if (!f.exists()) {
@@ -85,8 +85,6 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, Info> {
                 e.printStackTrace();
             }
         }
-
-
         BustaPagaParser bPP = null;
         String txt = "";
         try {
@@ -97,26 +95,21 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, Info> {
                 strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
                 txt += (strategy.getResultantText());
             }
-
             String tst = txt.replaceAll(" {2,}", " ");
             String foglio[] = tst.split("\n");
-            bPP = new BustaPagaParser(foglio, bPaga.getID());
-
+            busta = BustaPagaParser.getBusta(foglio, bPaga.getID());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         dataBA.open();
-        dataBA.insertBusta(bPP.returnInfo());
+        dataBA.insertBusta(busta);
         dataBA.close();
-
-        return info;
+        return busta;
     }
 
     @Override
-    protected void onPostExecute(Info i) {
+    protected void onPostExecute(Busta b) {
         pCall.procesDialog(false);
-        pCall.onPDFDownloaded(i, mode);
+        pCall.onPDFDownloaded(b, mode);
     }
 }

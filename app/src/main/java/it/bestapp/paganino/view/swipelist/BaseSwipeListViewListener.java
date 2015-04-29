@@ -1,8 +1,6 @@
 package it.bestapp.paganino.view.swipelist;
 
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import it.bestapp.paganino.R;
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;

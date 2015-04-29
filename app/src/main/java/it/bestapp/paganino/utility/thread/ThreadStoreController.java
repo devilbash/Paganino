@@ -2,31 +2,24 @@ package it.bestapp.paganino.utility.thread;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.widget.ListAdapter;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.jsoup.Connection;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.RowSet;
-
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.adapter.bustapaga.BustaPagaAdapter;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
 import it.bestapp.paganino.utility.db.DataBaseAdapter;
+import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.utility.parser.BustaPagaParser;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
@@ -70,6 +63,8 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
         File  f              = null;
         InputStream in       = null;
         FileOutputStream out = null;
+        Busta busta = null;
+
 
         for (BustaPaga bPaga : buste){
             f = new File(path , bPaga.getID() + ".pdf");
@@ -102,7 +97,7 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
 
                     String tst = txt.replaceAll(" {2,}", " ");
                     String foglio[] = tst.split("\n");
-                    bPP = new BustaPagaParser(foglio, bPaga.getID());
+                    busta = BustaPagaParser.getBusta(foglio, bPaga.getID());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,7 +107,7 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
                 DataBaseAdapter dataBA = null;
                 dataBA = new DataBaseAdapter(frag.getActivity().getBaseContext());
                 dataBA.open();
-                dataBA.insertBusta(bPP.returnInfo());
+                dataBA.insertBusta(busta);
                 dataBA.close();
             }
         }

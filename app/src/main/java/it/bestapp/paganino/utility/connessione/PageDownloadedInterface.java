@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.adapter.bustapaga.Info;
+import it.bestapp.paganino.utility.db.Info;
+import it.bestapp.paganino.utility.db.bin.Busta;
 
 
 public interface PageDownloadedInterface {
@@ -19,7 +20,7 @@ public interface PageDownloadedInterface {
 	public static final int SCARICA 	= 4;
 	
 	public void onPDFDownloaded(BustaPaga b, File f, char mode);
-    public void onPDFDownloaded(Info i, char mode);
+    public void onPDFDownloaded(Busta b, char mode);
     public void onStoreCompleted(List<BustaPaga> buste);
 	public void onListaDownloaded(ArrayList<String> lista);
 

@@ -30,17 +30,19 @@ import android.widget.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.bestapp.paganino.Charts;
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
-import it.bestapp.paganino.adapter.bustapaga.Info;
+import it.bestapp.paganino.utility.db.Info;
 import it.bestapp.paganino.dialog.LoginDialog;
 import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
 import it.bestapp.paganino.adapter.bustapaga.BustaPagaAdapter;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
+import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.utility.thread.ThreadHome;
 import it.bestapp.paganino.utility.thread.ThreadDataPrepare;
 import it.bestapp.paganino.utility.thread.ThreadStoreController;
@@ -51,9 +53,9 @@ import com.gc.materialdesign.widgets.SnackBar;
 
 
 public class Lista extends Fragment
-                implements PageDownloadedInterface,
-                           SwipeRefreshLayout.OnRefreshListener,
-                           SearchView.OnQueryTextListener {
+        implements PageDownloadedInterface,
+        SwipeRefreshLayout.OnRefreshListener,
+        SearchView.OnQueryTextListener {
 
     private Activity act;
     private SwipeRefreshLayout swpRefresh;
@@ -166,7 +168,7 @@ public class Lista extends Fragment
                 startActivity(intent);
                 break;
             case 'S':   //scarica
-
+//popup operazione conclusa
                 break;
             case 'D':   //drive
                 ((Main) act).pushFile(f, bP);
@@ -174,7 +176,7 @@ public class Lista extends Fragment
         }
     }
     @Override
-    public void onPDFDownloaded(Info i, char mode) {
+    public void onPDFDownloaded(Busta b, char mode) {
         swpLstView.closeOpenedItems();
 
         switch (mode) {
@@ -184,6 +186,11 @@ public class Lista extends Fragment
             case 'G':   //grafico
                 Intent intent = new Intent( act, Charts.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                Bundle extras = new Bundle();
+                extras.putParcelable("BUSTA", b);
+                intent.putExtras(extras);
+
                 startActivity(intent);
                 break;
         }
@@ -193,7 +200,7 @@ public class Lista extends Fragment
 
     @Override
     public void onResume(){
-       super.onResume();
+        super.onResume();
         swpLstView.deferNotifyDataSetChanged();
     }
 
@@ -203,26 +210,37 @@ public class Lista extends Fragment
     }
 
     @Override
-    public void onListaDownloaded(ArrayList<String> l) {
-        adapter.getList().clear();
-        for (String element : l) {
-            BustaPaga bP = new BustaPaga(getActivity(), element);
-            adapter.add(bP);
+    public void onListaDownloaded(ArrayList<String> internet) {
+        boolean trovato;
+        for (String element : internet) {
+            trovato = false;
+            for (BustaPaga localElement : adapter.getList()) {
+                if (localElement.getID().equalsIgnoreCase(element)) {
+                    trovato = true;
+                }
+            }
+            if (!trovato) {
+                BustaPaga bP = new BustaPaga(getActivity(), element);
+                adapter.add(bP);
+            }
         }
+        List<BustaPaga> lista=adapter.getList();
+
+        Collections.sort(lista);
         adapter.notifyDataSetChanged();
         swpRefresh.setRefreshing(false);
     }
 
-        @Override
-        public void procesDialog(boolean b) {
-            if (b) {
-               pDialog = new ProgressDialog(getActivity(), "Loading");
-               pDialog.show();
-            } else {
-               pDialog.hide();
-               pDialog.dismiss();
-            }
+    @Override
+    public void procesDialog(boolean b) {
+        if (b) {
+            pDialog = new ProgressDialog(getActivity(), "Loading");
+            pDialog.show();
+        } else {
+            pDialog.hide();
+            pDialog.dismiss();
         }
+    }
 
     @Override
     public void login() {

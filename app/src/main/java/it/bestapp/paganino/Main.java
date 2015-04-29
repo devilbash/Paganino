@@ -18,15 +18,14 @@ import it.bestapp.paganino.utility.setting.SettingsManager;
 
 
 public class Main extends BaseDriveActivity  //ActionBarActivity
-                implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final int REQUEST_CODE_SETTINGS = 0;
     private SingletonParametersBridge singleton;
     private Toolbar toolbar;
     private FragmentManager fragmentManager;
-
+    private SettingsManager settings;
     public  NavigationDrawerFragment mNavigationDrawerFragment;
-    private boolean googleDrive;
 
 
     @Override
@@ -41,8 +40,7 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
         }
 
         singleton = SingletonParametersBridge.getInstance();
-        SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
-        driveActive(settings.isDrive());
+        settings = (SettingsManager) singleton.getParameter("settings");
 
 
 
@@ -85,5 +83,9 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onResume(){
+        driveActive(settings.isDrive());
+        super.onResume();
+    }
 }

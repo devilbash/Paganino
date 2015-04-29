@@ -1,4 +1,4 @@
-package it.bestapp.paganino.adapter.bustapaga;
+package it.bestapp.paganino.utility.db;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class Info implements Parcelable {
 	protected float[] ferie;
 	protected float[] rol;
 	protected float[] banca;
-	*/
+*/
 	
 
 	public Info(String id) {
@@ -32,7 +32,7 @@ public class Info implements Parcelable {
 		this.ritenute = r;
 		this.totale = t;
 		this.netto = this.totale - this.ritenute;
-		this.bonus = this.lordo - this.lordo_base;
+		this.bonus = this.lordo  - this.lordo_base;
 		this.extra = this.totale - this.lordo_base;
 		
 

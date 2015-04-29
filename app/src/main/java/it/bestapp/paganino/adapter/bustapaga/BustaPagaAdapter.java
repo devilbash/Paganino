@@ -2,6 +2,7 @@ package it.bestapp.paganino.adapter.bustapaga;
 
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
+import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
@@ -108,6 +109,13 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
                 @Override
                 public void onClick(View v) {
                     (new ThreadPDF(frag, conn, bPaga, 'S')).execute();
+                }
+            });
+
+            excel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    (new ThreadAnaPDF(frag, conn, bPaga, 'E')).execute();
                 }
             });
 
