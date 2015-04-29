@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <title>Bar Chart</title>
+    <script src="script/Chart.js"></script>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+
+    <script>
+        window.onload = function(){
+		    API.plot( );
+        }
+
+        function showPlot(data){
+            dataValue = eval("(" + data + ")");
+            var barChartData = {
+                labels : ["PagaBase","SuperMin","TotComp","TotRit","Netto"],
+                datasets : [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,220,220,0.8)",
+                        highlightFill: "rgba(220,220,220,0.75)",
+                        highlightStroke: "rgba(220,220,220,1)",
+                        data : dataValue
+                    }
+                ]
+            }
+            var options = {
+               responsive: true,
+               animation: false,
+            }
+
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myBar = new Chart(ctx).Bar(barChartData, options	);
+        }
+
+    </script>
+</head>
+    <body>
+        <div style="width: 85%" class="grafici">
+            <canvas id="canvas"></canvas>
+        </div>
+    </body>
+</html>

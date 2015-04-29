@@ -1,0 +1,8 @@
+
+.grafici {
+ margin: 0 auto;
+}
+
+.grafici > div{
+float: left;
+}
