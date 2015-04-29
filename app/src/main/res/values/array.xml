@@ -31,5 +31,12 @@
         <item>Excel Andamento</item>
     </string-array>
 
+    <string-array name="TITOLIPAGER">
+        <item>Stipendio</item>
+        <item>Ferie</item>
+        <item>Banca ore</item>
+        <item>ROL</item>
+    </string-array>
+
 
 </resources>
