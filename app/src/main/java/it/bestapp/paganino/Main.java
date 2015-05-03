@@ -1,6 +1,7 @@
 package it.bestapp.paganino;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +11,16 @@ import android.support.v4.widget.DrawerLayout;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.util.ArrayList;
+import java.util.List;
+
+import it.bestapp.paganino.adapter.bustapaga.Busta;
+import it.bestapp.paganino.dialog.Login;
+import it.bestapp.paganino.dialog.SelectPeriod;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.fragment.NavigationDrawerFragment;
+import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.drive.BaseDriveActivity;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
@@ -26,6 +34,8 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
     private FragmentManager fragmentManager;
     private SettingsManager settings;
     public  NavigationDrawerFragment mNavigationDrawerFragment;
+    private HRConnect conn = null;
+    private Lista  listaBP;
 
 
     @Override
@@ -44,9 +54,11 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
 
 
 
-
         CookieHandler.setDefault(new CookieManager());
-        Lista  listaBP = new Lista();
+
+        conn = new HRConnect();
+        listaBP = new Lista();
+        listaBP.setConn(conn);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, listaBP)
@@ -60,16 +72,22 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout),
                 toolbar);
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-    /*    Fragment f =  ( Fragment) frags.get(position);
-        if ( fragmentManager.findFragmentByTag("impostazioni") == null ){
-            fragmentManager.beginTransaction().
-                    add(R.id.container, f, "impostazioni").
-                    addToBackStack(null).commit();
-        }*/
+        switch (position+1){
+            case 1:
+                //cambio pswd
+                break;
+            case 2:
+                //scarica cud
+                break;
+            case 3:
+                (new SelectPeriod(this, listaBP, conn)).show();
+                break;
+        };
     }
 
     @Override
@@ -88,4 +106,19 @@ public class Main extends BaseDriveActivity  //ActionBarActivity
         driveActive(settings.isDrive());
         super.onResume();
     }
+
+    /*@Override
+    protected  void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelableArrayList("Lista", (ArrayList<Busta>) listaBP.getAdapter().getList());
+    }
+    @Override
+    protected  void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        List<Busta>  list = savedInstanceState.getParcelableArrayList("Lista");
+        listaBP.getAdapter().setList(list);
+    }*/
+
+
+
 }

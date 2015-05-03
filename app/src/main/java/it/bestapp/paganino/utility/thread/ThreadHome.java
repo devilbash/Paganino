@@ -1,6 +1,7 @@
 package it.bestapp.paganino.utility.thread;
 
-import it.bestapp.paganino.dialog.LoginDialog;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
+import it.bestapp.paganino.dialog.Login;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
@@ -13,31 +14,27 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 
 public class ThreadHome extends AsyncTask<Void, Void, String> {
 
-    private Activity act;
+    //private Activity act;
     private HRConnect con = null;
     private String user;
     private String pswd;
     private PageDownloadedInterface callBack = null;
-    private ArrayList<String> lista = null;
+    private ArrayList<Busta> lista = null;
     private boolean error;
-    private LoginDialog lDialog;
+    private Login lDialog;
     private SettingsManager settings;
 
 
 
-    public ThreadHome( Fragment fL, HRConnect c) {
+    public ThreadHome( PageDownloadedInterface fL, HRConnect c) {
         this.con  = c;
-        this.act  = fL.getActivity();
-        this.callBack= (PageDownloadedInterface) fL;
+        this.callBack = fL;
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
         settings = (SettingsManager) singleton.getParameter("settings");
@@ -80,7 +77,7 @@ public class ThreadHome extends AsyncTask<Void, Void, String> {
             callBack.login();
             return;
         };
-        lista = new ArrayList<String>();
+        lista = new ArrayList<Busta>();
         String link;
         String keys[];
         String key ;
@@ -95,7 +92,7 @@ public class ThreadHome extends AsyncTask<Void, Void, String> {
             keys = link.split("Versione=A");
             key  = keys[keys.length-1];
             key  = key.substring(2, 6);
-            lista.add(key);
+            lista.add(new Busta(key));
         }
         callBack.onListaDownloaded(lista);
     }

@@ -1,6 +1,5 @@
 package it.bestapp.paganino;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 
 import it.bestapp.paganino.adapter.TabsPagerAdapter;
-import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.view.tabsliding.SlidingTabLayout;
 
 
@@ -37,7 +35,7 @@ public class Charts extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.act_chart);
+        setContentView(R.layout.act_charts);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -57,35 +55,21 @@ public class Charts extends ActionBarActivity
         });
 
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        // Create the adapter that will return a fragment for each of the three  primary sections of the activity.
         mSectionsPagerAdapter = new TabsPagerAdapter(this, getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
-
-
         tabs.setViewPager(mViewPager);
-
-
     }
-
-
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
     }
-
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 }

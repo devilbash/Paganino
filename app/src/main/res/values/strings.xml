@@ -69,6 +69,8 @@
     <string name="newTag">New!</string>
 
 
-
+    <string name="min"></string>
+    <string name="max"></string>
+    <string name="intervallo">Selezionare intervallo</string>
 
 </resources>

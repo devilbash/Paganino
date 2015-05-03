@@ -16,11 +16,12 @@ import it.bestapp.paganino.R;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
+import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
 import it.bestapp.paganino.utility.setting.*;
 import it.bestapp.paganino.utility.thread.ThreadHome;
 
 
-public class LoginDialog {
+public class Login {
 
 
     private MaterialDialog dialog;
@@ -39,7 +40,7 @@ public class LoginDialog {
 
 
 
-    public  LoginDialog(Fragment f, HRConnect c){
+    public Login(Fragment f, HRConnect c){
         this.act  = f.getActivity();
         this.frag = f;
         this.conn = c;
@@ -58,7 +59,7 @@ public class LoginDialog {
                                                 settings.setUser(mEmailView.getText().toString());
                                                 settings.setPaswd(mPasswordView.getText().toString());
                                             }
-                                            (new ThreadHome(frag, conn)).execute();
+                                            (new ThreadHome((PageDownloadedInterface) act, conn)).execute();
                                         }
                                         @Override
                                         public void onNegative(MaterialDialog dialog) {

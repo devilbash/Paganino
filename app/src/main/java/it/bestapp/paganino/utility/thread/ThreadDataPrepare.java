@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import java.io.File;
 import java.util.ArrayList;
 
+import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
@@ -14,7 +15,7 @@ import it.bestapp.paganino.utility.setting.SettingsManager;
 
 
 
-public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<String>> {
+public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<Busta>> {
 
     private SingletonParametersBridge singleton;
     private String dirPath;
@@ -34,9 +35,10 @@ public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<String>> 
     }
 
     @Override
-    public ArrayList<String> doInBackground(Void... params) {
-        ArrayList<String> lista = new ArrayList<String>();
+    public ArrayList<Busta> doInBackground(Void... params) {
+        ArrayList<Busta> lista = new ArrayList<Busta>();
         String[] filen = new String[2];
+
         File f = new File(dirPath);
         if (f.exists() && f.isDirectory()){
             File[] files = f.listFiles();
@@ -44,7 +46,7 @@ public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<String>> 
                 File file = files[i];
                 filen = file.getName().split("\\.");
                 if( filen[1].equalsIgnoreCase("pdf")   ){
-                    lista.add(filen[0]);
+                    lista.add(new Busta(filen[0]));
                 }
             }
         }
@@ -52,7 +54,7 @@ public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<String>> 
     }
 
     @Override
-    protected void onPostExecute(ArrayList<String> l) {
+    protected void onPostExecute(ArrayList<Busta> l) {
         if (l.isEmpty())
             (new ThreadHome(fLista, conn)).execute();
         else

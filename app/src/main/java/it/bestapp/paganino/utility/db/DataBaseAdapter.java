@@ -2,7 +2,9 @@ package it.bestapp.paganino.utility.db;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +12,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import it.bestapp.paganino.utility.db.bin.Busta;
+import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.db.bin.Ore;
 import it.bestapp.paganino.utility.db.bin.Voci;
 import it.bestapp.paganino.utility.db.DAO.IBustaDAO;
@@ -21,14 +23,16 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
 
 
     static final String DATABASE_NAME = "paganino.db";
-    public static final int DATABASE_VERSION = 1 ;
+    public static final int DATABASE_VERSION = 7 ;
 
 
     // SQL Statement to create a new database.
     static final String[] DATABASE_CREATE = {
             "create table "
                     + "BUSTA_PAGA " + "( "
-                    + "ID "      	+ "text UNIQUE primary key , "
+                    + "ID "      	+ "text UNIQUE primary key, "
+                    + "ANNO "       + "INTEGER, "
+                    + "MESE "       + "INTEGER, "
                     + "PAGABASE "   + "REAL, "
                     + "SUPERMIN "	+ "REAL, "
                     + "TOTRIT "     + "REAL, "
@@ -37,24 +41,24 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
                     + ");",
             "create table "
                     + "BUSTA_ORE "  + "( "
-                    + "ID"      	+ " text UNIQUE primary key, "
-                    + "F_GO" 		+ " REAL, "
-                    + "F_SP"		+ " REAL, "
-                    + "F_RE"		+ " REAL, "
-                    + "R_GO" 		+ " REAL, "
-                    + "R_SP"		+ " REAL, "
-                    + "R_RE"		+ " REAL, "
-                    + "B_GO" 		+ " REAL, "
-                    + "B_SP"		+ " REAL, "
-                    + "B_RE"		+ " REAL"
+                    + "ID "      	+ " text UNIQUE primary key, "
+                    + "F_GO " 		+ " REAL, "
+                    + "F_SP "		+ " REAL, "
+                    + "F_RE "		+ " REAL, "
+                    + "R_GO " 		+ " REAL, "
+                    + "R_SP "		+ " REAL, "
+                    + "R_RE "		+ " REAL, "
+                    + "B_GO " 		+ " REAL, "
+                    + "B_SP "		+ " REAL, "
+                    + "B_RE "		+ " REAL"
                     + ");",
             "create table "
                     + "BUSTA_VOCI " + "( "
-                    + "ID "      	+ "text UNIQUE primary key , "
-                    + "POS" 		+ "text "
-                    + "IDVOCE" 		+ "INTEGER "
-                    + "IMPORTO" 	+ "INTEGER "
-                    + "SHKZG" 		+ "INTEGER "
+                    + "ID "      	+ "TEXT UNIQUE primary key , "
+                    + "POS " 		+ "TEXT "
+                    + "IDVOCE " 	+ "INTEGER "
+                    + "IMPORTO " 	+ "INTEGER "
+                    + "SHKZG " 		+ "INTEGER "
                     + ");"
     };
 
@@ -83,10 +87,14 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
     }
 
     @Override
-    public void insertBusta(Busta b) {
+    public void insertBusta(BustaPaga b) {
         ContentValues newValues = new ContentValues();
         // Assign values for each column.
         newValues.put("ID",        b.getId());
+
+        newValues.put("ANNO",      b.getNumAnno());
+        newValues.put("MESE",      b.getNumMese());
+
         newValues.put("PAGABASE",  b.getPagaBase());
         newValues.put("SUPERMIN",  b.getSuperMin());
         newValues.put("TOTRIT",    b.getTotRit());
@@ -96,24 +104,25 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
         db.insert("BUSTA_PAGA", null, newValues);
 
 
-        insertOre(b.getOre());
+        insertOre(b.getOre(), b.getId());
     }
 
     @Override
-    public Busta getSingleBusta(String id) {
-        Busta busta = null;
+    public BustaPaga getSingleBusta(String id) {
+        BustaPaga busta = null;
         String sql = IBustaDAO.SELECT_BY_PK;
         Cursor c = db.rawQuery(sql, new String[] { id });
 
         if (c != null) {
             if (c.moveToFirst()) {
                 do {
-                    busta = new Busta(c.getString(c.getColumnIndex("ID")));
+                    busta = new BustaPaga(c.getString(c.getColumnIndex("ID")));
                     busta.setPagaBase(c.getFloat(c.getColumnIndex("PAGABASE")));
                     busta.setSuperMin(c.getFloat(c.getColumnIndex("SUPERMIN")));
-                    busta.setTotRit  (c.getFloat(c.getColumnIndex("TOTRIT")));
-                    busta.setTotComp (c.getFloat(c.getColumnIndex("TOTCOMP")));
+                    busta.setTotRit(c.getFloat(c.getColumnIndex("TOTRIT")));
+                    busta.setTotComp(c.getFloat(c.getColumnIndex("TOTCOMP")));
                     busta.setNetto(c.getFloat(c.getColumnIndex("NETTO")));
+                    busta.setOre(getSingleOre(busta.getId()));
                 } while (c.moveToNext());
             }
         }
@@ -123,10 +132,10 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
     }
 
     @Override
-    public List<Busta> getAllBusta() {
+    public List<BustaPaga> getAllBusta() {
         String sql = IBustaDAO.SELECT_ALL;
-        List<Busta> list = new ArrayList<Busta>();
-        Busta busta = null;
+        List<BustaPaga> list = new ArrayList<BustaPaga>();
+        BustaPaga busta = null;
         Cursor c = db.rawQuery(sql, null);
         if (c != null) {
             if (c.moveToFirst()) {
@@ -134,9 +143,10 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
                     busta.setId      (c.getString(c.getColumnIndex("ID")));
                     busta.setPagaBase(c.getFloat(c.getColumnIndex("PAGABASE")));
                     busta.setSuperMin(c.getFloat(c.getColumnIndex("SUPERMIN")));
-                    busta.setTotRit  (c.getFloat(c.getColumnIndex("TOTRIT")));
-                    busta.setTotComp (c.getFloat(c.getColumnIndex("TOTCOMP")));
-                    busta.setNetto   (c.getFloat(c.getColumnIndex("NETTO")));
+                    busta.setTotRit(c.getFloat(c.getColumnIndex("TOTRIT")));
+                    busta.setTotComp(c.getFloat(c.getColumnIndex("TOTCOMP")));
+                    busta.setNetto(c.getFloat(c.getColumnIndex("NETTO")));
+                    busta.setOre(getSingleOre(busta.getId()));
                     list.add(busta);
                 } while (c.moveToNext());
             }
@@ -145,56 +155,85 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
         return list;
     }
 
-
     @Override
-    public void insertOre(List<Ore> ore) {
-        ContentValues newValues = new ContentValues();
-        newValues.put("ID",  ore.get(0).getId());
-        for (Ore ora : ore) {
-            // Assign values for each column.
-            newValues.put(ora.getTipo().concat("_GO"), ora.getGod());
-            newValues.put(ora.getTipo().concat("_SP"), ora.getSpe());
-            newValues.put(ora.getTipo().concat("_RE"), ora.getRes());
+    public ArrayList<BustaPaga> getIntervalBusta(int a1,int m1,int a2,int m2) {
+        String sql = IBustaDAO.SELECT_DATE_RANGE;
+        ArrayList<BustaPaga> list = new ArrayList<BustaPaga>();
+        BustaPaga busta = null;
+        String [] whereCond = new String[]{String.valueOf(a1),
+                String.valueOf(m1),
+                String.valueOf(a2),
+                String.valueOf(m2)};
+
+        Cursor c = db.rawQuery(sql,whereCond );
+        if (c != null) {
+            if (c.moveToFirst()) {
+                do {
+                    busta = new BustaPaga(c.getString(c.getColumnIndex("ID")));
+                    busta.setPagaBase(c.getFloat(c.getColumnIndex("PAGABASE")));
+                    busta.setSuperMin(c.getFloat(c.getColumnIndex("SUPERMIN")));
+                    busta.setTotRit(c.getFloat(c.getColumnIndex("TOTRIT")));
+                    busta.setTotComp(c.getFloat(c.getColumnIndex("TOTCOMP")));
+                    busta.setNetto(c.getFloat(c.getColumnIndex("NETTO")));
+                    busta.setOre(getSingleOre(busta.getId()));
+                    list.add(busta);
+                } while (c.moveToNext());
+            }
         }
-        // Insert the row into your table
-        db.insert("ORE", null, newValues);
+        c.close();
+        return list;
     }
 
     @Override
-    public List<Ore> getSingleOre(String id) {
-        List<Ore> ore = new ArrayList<Ore>();
+    public Map<String,Ore> getSingleOre(String id) {
+        Map<String,Ore> ore = new HashMap<String,Ore>();
 
         Ore ora = null;
-        String sql = IBustaDAO.SELECT_BY_PK;
+        String sql = IOreDAO.SELECT_BY_PK;
         Cursor c = db.rawQuery(sql, new String[] { id });
 
-        if (c.moveToFirst()) {
-            do {
-                ora = new Ore(c.getString(c.getColumnIndex("ID")),"F");
-                ora.setGod(c.getFloat(c.getColumnIndex("F_GO")));
-                ora.setSpe(c.getFloat(c.getColumnIndex("F_SP")));
-                ora.setRes(c.getFloat(c.getColumnIndex("F_RE")));
-                ore.add(ora);
 
-                ora = new Ore(c.getString(c.getColumnIndex("ID")),"R");
-                ora.setGod(c.getFloat(c.getColumnIndex("B_GO")));
-                ora.setSpe(c.getFloat(c.getColumnIndex("B_SP")));
-                ora.setRes(c.getFloat(c.getColumnIndex("B_RE")));
-                ore.add(ora);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                do {
+                    ora = new Ore(c.getString(c.getColumnIndex("ID")));
+                    ora.setGod(c.getFloat(c.getColumnIndex("F_GO")));
+                    ora.setSpe(c.getFloat(c.getColumnIndex("F_SP")));
+                    ora.setRes(c.getFloat(c.getColumnIndex("F_RE")));
+                    ore.put("F", ora);
 
-                ora = new Ore(c.getString(c.getColumnIndex("ID")),"B");
-                ora.setGod(c.getFloat(c.getColumnIndex("R_GO")));
-                ora.setSpe(c.getFloat(c.getColumnIndex("R_SP")));
-                ora.setRes(c.getFloat(c.getColumnIndex("R_RE")));
-                ore.add(ora);
+                    ora = new Ore(c.getString(c.getColumnIndex("ID")));
+                    ora.setGod(c.getFloat(c.getColumnIndex("B_GO")));
+                    ora.setSpe(c.getFloat(c.getColumnIndex("B_SP")));
+                    ora.setRes(c.getFloat(c.getColumnIndex("B_RE")));
+                    ore.put("R", ora);
 
-                ore.add(ora);
-            } while (c.moveToNext());
+                    ora = new Ore(c.getString(c.getColumnIndex("ID")));
+                    ora.setGod(c.getFloat(c.getColumnIndex("R_GO")));
+                    ora.setSpe(c.getFloat(c.getColumnIndex("R_SP")));
+                    ora.setRes(c.getFloat(c.getColumnIndex("R_RE")));
+                    ore.put("B", ora);
+
+                } while (c.moveToNext());
+            }
         }
         c.close();
 
         // return contact list
         return ore;
+    }
+
+    @Override
+    public void insertOre(Map<String,Ore> ore, String id) {
+        ContentValues newValues = new ContentValues();
+        newValues.put("ID", id);
+        for (Map.Entry<String, Ore> entry : ore.entrySet()) {
+            newValues.put(entry.getKey().concat("_GO"), entry.getValue().getGod());
+            newValues.put(entry.getKey().concat("_SP"), entry.getValue().getSpe());
+            newValues.put(entry.getKey().concat("_RE"), entry.getValue().getRes());
+        }
+        // Insert the row into your table
+        db.insert("BUSTA_ORE", null, newValues);
     }
 
     @Override

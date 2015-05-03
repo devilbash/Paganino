@@ -12,31 +12,91 @@
 
 
 	<script>
-	var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-	var barChartData = {
-		labels : ["January","February","March","April","May","June","July"],
-		datasets : [
+		window.onload = function(){
+		    //API.plotOre();
+			showPlot( 53.6 , 53.6 , 0.0 );
+        }
+
+	function showPlot(val1,val2,val3){
+		res= dataValue = eval("(" + val1 + ")");
+		spe= dataValue = eval("(" + val2 + ")");
+		god= dataValue = eval("(" + val3 + ")");
+
+		var red = "#bf616a",
+			blue = "#5B90BF",
+			yellow = "#ebcb8b",
+			green = "#a3be8c";
+
+		var $id = function(id){
+				return document.getElementById(id);
+			},
+		helpers = Chart.helpers;
+		Chart.defaults.global.responsive = true;
+
+
+	// Modular doughnut
+
+		var canvas = $id('canvas'),
+			colours = {
+				"Spettanti":	blue,
+				"Godute": 		green,
+				"Residue": 		yellow
+			};
+		var moduleData = [
 			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,0.8)",
-				highlightFill: "rgba(220,220,220,0.75)",
-				highlightStroke: "rgba(220,220,220,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+				value: res,
+				color: colours["Spettanti"],
+				highlight: Colour(colours["Spettanti"], 10),
+				label: "Spettanti",
 			},
 			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,0.8)",
-				highlightFill : "rgba(151,187,205,0.75)",
-				highlightStroke : "rgba(151,187,205,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+				value: god,
+				color: colours["Godute"],
+				highlight: Colour(colours["Godute"], 10),
+				label: "Godute"
+			},
+			{
+				value: spe,
+				color: colours["Residue"],
+				highlight: Colour(colours["Residue"], 10),
+				label: "Residue"
 			}
-		]
-	}
-	window.onload = function(){
-		var ctx = document.getElementById("canvas").getContext("2d");
-		window.myBar = new Chart(ctx).Bar(barChartData, {
-			responsive : true
+		];
+		var modulePie = new Chart(canvas.getContext('2d')).Pie(moduleData, { tooltipTemplate : "<%if (label){%><%=label%>: <%}%><%= value %>", animation: false });
+		var legendHolder = document.createElement('div');
+		legendHolder.innerHTML = modulePie.generateLegend();
+		helpers.each(legendHolder.firstChild.childNodes, function(legendNode, index){
+			helpers.addEvent(legendNode, 'mouseover', function(){
+				var activeSegment = modulePie.segments[index];
+				activeSegment.save();
+				activeSegment.fillColor = activeSegment.highlightColor;
+				modulePie.showTooltip([activeSegment]);
+				activeSegment.restore();
+			});
 		});
+		helpers.addEvent(legendHolder.firstChild, 'mouseout', function(){
+			modulePie.draw();
+		});
+		canvas.parentNode.parentNode.appendChild(legendHolder);
+	};
+
+	function Colour(col, amt) {
+		var usePound = false;
+		if (col[0] == "#") {
+			col = col.slice(1);
+			usePound = true;
+		}
+		var num = parseInt(col,16);
+		var r = (num >> 16) + amt;
+		if (r > 255) r = 255;
+		else if  (r < 0) r = 0;
+		var b = ((num >> 8) & 0x00FF) + amt;
+		if (b > 255) b = 255;
+		else if  (b < 0) b = 0;
+		var g = (num & 0x0000FF) + amt;
+		if (g > 255) g = 255;
+		else if (g < 0) g = 0;
+		return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
 	}
 	</script>
 	</body>

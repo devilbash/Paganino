@@ -1,5 +1,6 @@
 package it.bestapp.paganino.utility.thread;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 
@@ -11,15 +12,18 @@ import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
+import it.bestapp.paganino.Chart;
+import it.bestapp.paganino.Main;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
 import it.bestapp.paganino.utility.db.DataBaseAdapter;
-import it.bestapp.paganino.utility.db.bin.Busta;
+import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.parser.BustaPagaParser;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
@@ -28,22 +32,29 @@ import it.bestapp.paganino.utility.setting.SettingsManager;
  */
 public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
 
-    private Fragment frag   = null;
+    // private Fragment frag   = null;
     private HRConnect conn  = null;
     private PageDownloadedInterface pCall = null;
     private SingletonParametersBridge singleton;
     private String path;
-    private List<BustaPaga> buste;
+    private List<Busta> buste;
+    private DataBaseAdapter dataBA;
+    private ArrayList<BustaPaga> range;
+    private Main act;
 
 
-    public ThreadStoreController(Lista f, List<BustaPaga> b, HRConnect c) {
-        this.frag  = f;
+    public ThreadStoreController(Main a, List<Busta> b, HRConnect c) {
+        //this.frag  = f;
         this.conn  = c;
-        this.pCall = (PageDownloadedInterface) f;
+        //this.pCall = (PageDownloadedInterface) f;
         this.buste = b;
-
+        act = a;
         singleton = SingletonParametersBridge.getInstance();
         SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
+
+        range = new ArrayList<BustaPaga>();
+        dataBA = new DataBaseAdapter(act);
+
         path = settings.getPath();
         File file = new File(path);
         if (!file.exists())
@@ -54,7 +65,7 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pCall.procesDialog(true);
+        //    pCall.procesDialog(true);
     }
 
     @Override
@@ -63,15 +74,16 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
         File  f              = null;
         InputStream in       = null;
         FileOutputStream out = null;
-        Busta busta = null;
+        BustaPaga bPaga = null;
 
-
-        for (BustaPaga bPaga : buste){
-            f = new File(path , bPaga.getID() + ".pdf");
-            if (!f.exists()) {   //se file non esiste: 1) scarico 2) scrivo 3) analizzo 4)salvo db
-                //step 1-2
+        dataBA.open();
+        for (Busta b : buste){
+            f = new File(path , b.getID() + ".pdf");
+            //se file non esiste: 1) scarico 2) scrivo 3) analizzo 4)salvo db
+            if (!f.exists()) {
+    //step 1-2
                 try {
-                    in = conn.getPDF( bPaga.getID() );
+                    in = conn.getPDF( b.getID() );
                     out = new FileOutputStream(f);
                     byte data[] = new byte[1024];
                     while ((count = in.read(data)) != -1)
@@ -82,7 +94,10 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
 
+            bPaga = dataBA.getSingleBusta(b.getID());
+            if (bPaga == null) {
                 //step 3
                 BustaPagaParser bPP = null;
                 String txt = "";
@@ -97,26 +112,28 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
 
                     String tst = txt.replaceAll(" {2,}", " ");
                     String foglio[] = tst.split("\n");
-                    busta = BustaPagaParser.getBusta(foglio, bPaga.getID());
+                    bPaga = BustaPagaParser.getBusta(foglio, b.getID());
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-		        //step 4
-                DataBaseAdapter dataBA = null;
-                dataBA = new DataBaseAdapter(frag.getActivity().getBaseContext());
-                dataBA.open();
-                dataBA.insertBusta(busta);
-                dataBA.close();
+                dataBA.insertBusta(bPaga);
             }
+            range.add(bPaga);
         }
+
+        dataBA.close();
         return null;
     }
 
     @Override
     protected void onPostExecute(Void param) {
-        pCall.procesDialog(false);
-        pCall.onStoreCompleted(buste);
+        //    pCall.procesDialog(false);
+        //    pCall.onStoreCompleted(buste);
+
+        Intent intent = new Intent( act, Chart.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putParcelableArrayListExtra("BUSTE", range);
+        act.startActivity(intent);
     }
 }

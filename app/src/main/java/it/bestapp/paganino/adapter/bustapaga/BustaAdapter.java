@@ -1,8 +1,6 @@
 package it.bestapp.paganino.adapter.bustapaga;
 
-import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
@@ -10,7 +8,6 @@ import it.bestapp.paganino.utility.setting.SettingsManager;
 import it.bestapp.paganino.utility.thread.ThreadAnaPDF;
 import it.bestapp.paganino.utility.thread.ThreadPDF;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,28 +15,27 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BustaPagaAdapter extends BaseAdapter implements Filterable {
+public class BustaAdapter extends BaseAdapter implements Filterable {
 
     private Activity act;
     private Lista frag;
     private HRConnect conn;
     private SettingsManager settings;
-    private static List<BustaPaga> list;
+    private static List<Busta> list;
     private List<Integer> hiddenItem;
 	//private static PageDownloadedInterface callBackMain;
 
-	public BustaPagaAdapter(Lista f, HRConnect c) {
+	public BustaAdapter(Lista f, HRConnect c) {
 		act = f.getActivity();
         frag = f;
         conn = c;
 	//	callBackMain = (PageDownloadedInterface) a;
-		list = new ArrayList<BustaPaga>();
+		list = new ArrayList<Busta>();
 		hiddenItem = new ArrayList<Integer>();
 
 
@@ -60,13 +56,13 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 		if (v == null) {
 			v = act.getLayoutInflater().inflate(R.layout.row_swp_busta, null);
 			v.setLongClickable(true);
-			vHolder = new ViewHolder(v);
+			vHolder = new ViewHolder(v, act);
 			v.setTag(vHolder);
 		} else {
 			vHolder = (ViewHolder) v.getTag();
 		}
 
-		BustaPaga bPaga = (BustaPaga) getItem(position);
+		Busta bPaga = (Busta) getItem(position);
 		vHolder.populate(bPaga, frag, conn);
         if (!settings.isDrive()){
             vHolder.nascondiDrive();
@@ -83,8 +79,10 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 		private ImageView grafico;
 		private ImageView excel;
         private ImageView drive;
+		private Activity act;
 
-		public ViewHolder(View convertView) {
+		public ViewHolder(View convertView,Activity a) {
+			act = a;
 			meseTextView = (TextView) convertView.findViewById(R.id.listMese);
 			annoTextView = (TextView) convertView.findViewById(R.id.listAnno);
 
@@ -100,8 +98,8 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
         }
 
 
-		public void populate(final BustaPaga bPaga, final Lista frag, final HRConnect conn) {
-			meseTextView.setText(bPaga.getMese());
+		public void populate(final Busta bPaga, final Lista frag, final HRConnect conn) {
+			meseTextView.setText(bPaga.getMese(act));
 			annoTextView.setText(bPaga.getAnno());
 
 
@@ -143,7 +141,7 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 	}
 
 	@Override
-	public BustaPaga getItem(int position) {
+	public Busta getItem(int position) {
 		return list.get(position);
 	}
 
@@ -156,11 +154,15 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 		return (long) position;
 	}
 
-	public List<BustaPaga> getList() {
+	public List<Busta> getList() {
 		return list;
 	}
+	public void setList(List<Busta> l) {
+		list = l;
+	}
 
-	public void add(BustaPaga bP) {
+
+	public void add(Busta bP) {
 		list.add(bP);
 	}
 
@@ -171,15 +173,15 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 			@Override
 			protected FilterResults performFiltering(CharSequence constraint) {
 				FilterResults results = new FilterResults();
-				List<BustaPaga> lBP = new ArrayList<BustaPaga>();
+				List<Busta> lBP = new ArrayList<Busta>();
 
 				if (constraint == null || constraint.length() == 0) {
 					// No filter implemented we return all the list
 					results.values = list;
 					results.count = list.size();
 				} else {
-					for (BustaPaga bP : list) {
-						if (bP.getMese()
+					for (Busta bP : list) {
+						if (bP.getMese(act)
 								.toUpperCase()
 								.startsWith(constraint.toString().toUpperCase()))
 							lBP.add(bP);
@@ -193,19 +195,19 @@ public class BustaPagaAdapter extends BaseAdapter implements Filterable {
 			@Override
 			protected void publishResults(CharSequence constraint,
 					FilterResults results) {
-				List<BustaPaga> listaVisibili = null;
-				BustaPaga p;
+				List<Busta> listaVisibili = null;
+				Busta p;
 				hiddenItem.clear();
 				// Now we have to inform the adapter about the new list filtered
-				listaVisibili = (List<BustaPaga>) results.values;
+				listaVisibili = (List<Busta>) results.values;
 				if (results.count == 0) {
 					hiddenItem.clear();
-					for (BustaPaga bP : list) {
+					for (Busta bP : list) {
 						bP.setNascosto(false);
 					}
 					notifyDataSetInvalidated();
 				} else {
-					for (BustaPaga bP : list) {
+					for (Busta bP : list) {
 						if (!listaVisibili.contains(bP)) {
 							bP.setNascosto(true);
 							hiddenItem.add(list.indexOf(bP));

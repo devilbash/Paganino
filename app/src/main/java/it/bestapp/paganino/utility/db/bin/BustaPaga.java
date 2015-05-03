@@ -1,15 +1,18 @@
 package it.bestapp.paganino.utility.db.bin;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by marco.compostella on 20/04/2015.
  */
-public class Busta implements Parcelable {
+public class BustaPaga implements Parcelable {
 
     private String id;
 
@@ -19,20 +22,38 @@ public class Busta implements Parcelable {
     private float  totComp;
     private float  netto;
 
-    private List<Ore>  ore;
+    private Map<String,Ore> ore;
     private List<Voci> voci;
 
-    public Busta(String id) {
-        this.id = id;
+    public int  getNumMese() {
+        return Integer.parseInt(id.substring(2, 4));
     }
 
-    public List<Ore> getOre() {
+    public int getNumAnno() {
+        return 2000 + Integer.parseInt(id.substring(0, 2));
+    }
+
+
+
+    public BustaPaga(String id) {
+        this.id = id;
+        ore = new HashMap();
+    }
+/*
+    public Ore getOra(String tipo) {
+        return ore.get(tipo);
+    }
+    public void setOra(String tipo, Ore ore) {
+        this.ore.put(tipo,ore);
+    }
+*/
+    public Map<String,Ore> getOre() {
         return ore;
     }
-
-    public void setOre(List<Ore> ore) {
+    public void setOre(Map<String,Ore> ore) {
         this.ore = ore;
     }
+
 
     public List<Voci> getVoci() {
         return voci;
@@ -98,27 +119,28 @@ public class Busta implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-
         dest.writeFloat(pagaBase);
         dest.writeFloat(superMin);
         dest.writeFloat(totRit);
         dest.writeFloat(totComp);
         dest.writeFloat(netto);
 
-        dest.writeTypedList(ore);
+        writeOre(dest);
     }
 
-    public static final Parcelable.Creator<Busta> CREATOR
-            = new Parcelable.Creator<Busta>() {
-        public Busta createFromParcel(Parcel in) {
-            return new Busta(in);
+    public static final Parcelable.Creator<BustaPaga> CREATOR
+            = new Parcelable.Creator<BustaPaga>() {
+        public BustaPaga createFromParcel(Parcel in) {
+            return new BustaPaga(in);
         }
 
-        public Busta[] newArray(int size) {
-            return new Busta[size];
+        public BustaPaga[] newArray(int size) {
+            return new BustaPaga[size];
         }
     };
-    private Busta(Parcel in) {
+
+    private BustaPaga(Parcel in) {
+        ore = new HashMap();
         readFromParcel(in);
     }
 
@@ -131,11 +153,32 @@ public class Busta implements Parcelable {
         totComp  = in.readFloat();
         netto    = in.readFloat();
 
-
-        if (ore == null) {
-            ore = new ArrayList();
-        }
-        in.readTypedList(ore, Ore.CREATOR);
+        //in.readTypedList(ore, Ore.CREATOR);
+        readOre(in);
     }
 
+
+    public void writeOre(Parcel out) {
+        out.writeInt(ore.size());
+        for (Map.Entry<String, Ore> entry : ore.entrySet()) {
+            out.writeString(entry.getKey());
+            out.writeParcelable(entry.getValue(),0);
+        }
+    }
+
+    private void readOre(Parcel in) {
+        int size = in.readInt();
+        String key = null;
+        Ore o = null;
+        for (int i = 0; i < size; i++) {
+            key = in.readString();
+            o = in.readParcelable(Ore.class.getClassLoader());
+            ore.put(key, o);
+        }
+    }
+
+
 }
+
+
+

@@ -9,15 +9,13 @@ import android.os.Parcelable;
 public class Ore implements Parcelable {
 
     private String id;
-    private String tipo;
 
     private float spe;
     private float god;
     private float res;
 
-    public Ore(String id, String t) {
+    public Ore(String id) {
         this.id = id;
-        this.tipo = t;
     }
 
 
@@ -53,14 +51,6 @@ public class Ore implements Parcelable {
         this.spe = Float.parseFloat(spe.replace(",", "."));
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public void setSpe(float spe) {
         this.spe = spe;
     }
@@ -82,7 +72,6 @@ public class Ore implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(tipo);
         dest.writeFloat(spe);
         dest.writeFloat(god);
         dest.writeFloat(res);
@@ -90,7 +79,6 @@ public class Ore implements Parcelable {
 
     public void readFromParcel(Parcel in) {
         id   = in.readString();
-        tipo = in.readString();
 
         spe = in.readFloat();
         god = in.readFloat();
@@ -102,11 +90,10 @@ public class Ore implements Parcelable {
     }
 
 
-    public static final Parcelable.Creator<Ore> CREATOR = new Parcelable.Creator<Ore>() {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Ore createFromParcel(Parcel in) {
             return new Ore(in);
         }
-
         public Ore[] newArray (int size)  {
             return new Ore[size];
         }

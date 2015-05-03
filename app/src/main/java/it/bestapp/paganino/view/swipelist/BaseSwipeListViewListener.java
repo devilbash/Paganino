@@ -3,8 +3,8 @@ package it.bestapp.paganino.view.swipelist;
 import android.view.View;
 
 import it.bestapp.paganino.R;
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.adapter.bustapaga.BustaPagaAdapter;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
+import it.bestapp.paganino.adapter.bustapaga.BustaAdapter;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.thread.ThreadPDF;
@@ -16,10 +16,10 @@ public class BaseSwipeListViewListener implements SwipeListViewListener {
 
     private Lista frag;
     private HRConnect conn;
-    private BustaPagaAdapter bpAdapter;
+    private BustaAdapter bpAdapter;
     private SwipeListView swpLstView;
 
-    public BaseSwipeListViewListener(Lista f, SwipeListView list, HRConnect conn, BustaPagaAdapter adapter) {
+    public BaseSwipeListViewListener(Lista f, SwipeListView list, HRConnect conn, BustaAdapter adapter) {
         this.frag       = f;
         this.conn       = conn;
         this.bpAdapter  = adapter;
@@ -28,7 +28,7 @@ public class BaseSwipeListViewListener implements SwipeListViewListener {
 
     @Override
     public void onOpened(int position, boolean toRight) {
-        BustaPaga bp= bpAdapter.getItem(position);
+        Busta bp= bpAdapter.getItem(position);
         if (toRight)
             (new ThreadPDF(frag, conn, bp, 'V')).execute();
     }

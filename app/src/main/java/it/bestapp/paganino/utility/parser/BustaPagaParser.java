@@ -1,17 +1,18 @@
 package it.bestapp.paganino.utility.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import it.bestapp.paganino.utility.db.Info;
-import it.bestapp.paganino.utility.db.bin.Busta;
+import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.db.bin.Ore;
 
 public class BustaPagaParser {
 
 
-    static public Busta getBusta (String a[], String id){
-        Busta b = new Busta(id);
+    static public BustaPaga getBusta (String a[], String id){
+        BustaPaga b = new BustaPaga(id);
 
         for(int i=0; i < a.length ; i++  ){
 
@@ -61,28 +62,28 @@ public class BustaPagaParser {
 
 
 
-    static public List<Ore> splitOre(String a, String id) {
-        List<Ore> list = new ArrayList<Ore>();
+    static public Map<String,Ore> splitOre(String a, String id) {
+        Map<String,Ore> list = new HashMap<String,Ore>();
         String[] tmp = a.split(" ");
         Ore ora;
 
-        ora = new Ore(id,"F");
+        ora = new Ore(id);
         ora.setRes(tmp[1]);
         ora.setGod(tmp[2]);
         ora.setSpe(tmp[3]);
-        list.add(ora);
+        list.put("F", ora);
 
-        ora = new Ore(id,"R");
+        ora = new Ore(id);
         ora.setRes(tmp[4]);
         ora.setGod(tmp[5]);
         ora.setSpe(tmp[6]);
-        list.add(ora);
+        list.put("R", ora);
 
-        ora = new Ore(id,"B");
+        ora = new Ore(id);
         ora.setRes(tmp[7]);
         ora.setGod(tmp[8]);
         ora.setSpe(tmp[9]);
-        list.add(ora);
+        list.put("B", ora);
 
         return list;
     }

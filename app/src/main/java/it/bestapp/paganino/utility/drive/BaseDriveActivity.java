@@ -1,6 +1,7 @@
 package it.bestapp.paganino.utility.drive;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
 
 
 public abstract class BaseDriveActivity extends ActionBarActivity implements
@@ -40,6 +41,15 @@ public abstract class BaseDriveActivity extends ActionBarActivity implements
     private GoogleApiClient mGoogleApiClient;
     private DriveId idFolder;
     private boolean active;
+    private Activity _this;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        _this = this;
+    }
 
 
 
@@ -69,7 +79,7 @@ public abstract class BaseDriveActivity extends ActionBarActivity implements
     }
 
 
-    public void pushFile(final File f, final BustaPaga bP){
+    public void pushFile(final File f, final Busta bP){
         if (idFolder == null) return;
         Drive.DriveApi.newDriveContents(getGoogleApiClient())
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
@@ -97,7 +107,7 @@ public abstract class BaseDriveActivity extends ActionBarActivity implements
                             e.printStackTrace();
                         }
                         MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                .setTitle(bP.getAnno()+"_"+bP.getMese()+".pdf")
+                                .setTitle(bP.getAnno()+"_"+bP.getMese(_this)+".pdf")
                                 .setMimeType("application/pdf")
                                 .setStarred(true).build();
 

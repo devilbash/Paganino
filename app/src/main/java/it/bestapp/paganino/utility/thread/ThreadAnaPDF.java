@@ -13,29 +13,28 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.utility.db.Info;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
 import it.bestapp.paganino.utility.db.DataBaseAdapter;
-import it.bestapp.paganino.utility.db.bin.Busta;
+import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.parser.BustaPagaParser;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
 
-public class ThreadAnaPDF extends AsyncTask<Void, Void, Busta> {
+public class ThreadAnaPDF extends AsyncTask<Void, Void, BustaPaga> {
 
     private Fragment frag = null;
     private HRConnect con = null;
-    private BustaPaga bPaga = null;
+    private Busta bPaga = null;
     private PageDownloadedInterface pCall = null;
     private SingletonParametersBridge singleton;
     private String path;
     private char mode;
     DataBaseAdapter dataBA = null;
 
-    public ThreadAnaPDF(Fragment f, HRConnect c, BustaPaga bP, char m) {
+    public ThreadAnaPDF(Fragment f, HRConnect c, Busta bP, char m) {
         this.frag = f;
         this.mode = m;
         this.con = c;
@@ -59,13 +58,13 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, Busta> {
     }
 
     @Override
-    public Busta doInBackground(Void... params) {
+    public BustaPaga doInBackground(Void... params) {
         int count;
         InputStream in;
         FileOutputStream out = null;
 
         dataBA.open();
-        Busta busta = dataBA.getSingleBusta(bPaga.getID());
+        BustaPaga busta = dataBA.getSingleBusta(bPaga.getID());
         dataBA.close();
 
         if (busta != null) return busta;
@@ -108,7 +107,7 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, Busta> {
     }
 
     @Override
-    protected void onPostExecute(Busta b) {
+    protected void onPostExecute(BustaPaga b) {
         pCall.procesDialog(false);
         pCall.onPDFDownloaded(b, mode);
     }

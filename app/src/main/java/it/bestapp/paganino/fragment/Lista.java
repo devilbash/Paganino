@@ -36,13 +36,12 @@ import java.util.List;
 import it.bestapp.paganino.Charts;
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
-import it.bestapp.paganino.utility.db.Info;
-import it.bestapp.paganino.dialog.LoginDialog;
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
-import it.bestapp.paganino.adapter.bustapaga.BustaPagaAdapter;
+import it.bestapp.paganino.dialog.Login;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
+import it.bestapp.paganino.adapter.bustapaga.BustaAdapter;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
-import it.bestapp.paganino.utility.db.bin.Busta;
+import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.thread.ThreadHome;
 import it.bestapp.paganino.utility.thread.ThreadDataPrepare;
 import it.bestapp.paganino.utility.thread.ThreadStoreController;
@@ -60,11 +59,15 @@ public class Lista extends Fragment
     private Activity act;
     private SwipeRefreshLayout swpRefresh;
     private ProgressDialog pDialog;
-    private BustaPagaAdapter adapter;
+    private BustaAdapter adapter;
     private SwipeListView swpLstView;
     private HRConnect conn = null;
-    private LoginDialog lDialog;
+    private Login lDialog;
     private Lista _this;
+
+    public BustaAdapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -78,8 +81,8 @@ public class Lista extends Fragment
         setHasOptionsMenu(true);
 
         conn = new HRConnect();
-        lDialog = new LoginDialog(this,conn);
-        adapter = new BustaPagaAdapter(this, conn);
+        lDialog = new Login(this,conn);
+        adapter = new BustaAdapter(this, conn);
         _this   = this;
 
         dataPrepare();
@@ -103,11 +106,11 @@ public class Lista extends Fragment
                         case R.id.menu_confronta:
                             List<Integer> checked = swpLstView.getPositionsSelected();
 
-                            List<BustaPaga> buste = new ArrayList<BustaPaga>();
+                            List<Busta> buste = new ArrayList<Busta>();
                             for (Integer i : checked)
                                 buste.add(adapter.getItem(i));
 
-                            (new ThreadStoreController(_this, buste, conn)).execute();
+                        //    (new ThreadStoreController(_this, buste, conn)).execute();
                             swpLstView.unselectedChoiceStates();
                             mode.finish();
                             return true;
@@ -156,8 +159,10 @@ public class Lista extends Fragment
         swpLstView.setSwipeOpenOnLongPress(false);
     }
 
+
+
     @Override
-    public void onPDFDownloaded(BustaPaga bP, File f, char mode) {
+    public void onPDFDownloaded(Busta bP, File f, char mode) {
         swpLstView.closeOpenedItems();
 
         switch (mode) {
@@ -176,7 +181,7 @@ public class Lista extends Fragment
         }
     }
     @Override
-    public void onPDFDownloaded(Busta b, char mode) {
+    public void onPDFDownloaded(BustaPaga b, char mode) {
         swpLstView.closeOpenedItems();
 
         switch (mode) {
@@ -205,26 +210,25 @@ public class Lista extends Fragment
     }
 
     @Override
-    public void onStoreCompleted(List<BustaPaga> buste) {
+    public void onStoreCompleted(List<Busta> buste) {
 
     }
 
     @Override
-    public void onListaDownloaded(ArrayList<String> internet) {
+    public void onListaDownloaded(ArrayList<Busta> internet) {
         boolean trovato;
-        for (String element : internet) {
+        for (Busta element : internet) {
             trovato = false;
-            for (BustaPaga localElement : adapter.getList()) {
-                if (localElement.getID().equalsIgnoreCase(element)) {
+            for (Busta localElement : adapter.getList()) {
+                if (localElement.getID().equalsIgnoreCase(element.getID())) {
                     trovato = true;
                 }
             }
             if (!trovato) {
-                BustaPaga bP = new BustaPaga(getActivity(), element);
-                adapter.add(bP);
+                adapter.add(element);
             }
         }
-        List<BustaPaga> lista=adapter.getList();
+        List<Busta> lista=adapter.getList();
 
         Collections.sort(lista);
         adapter.notifyDataSetChanged();
@@ -293,6 +297,10 @@ public class Lista extends Fragment
     }
     public void stopRefresh() {
         swpRefresh.setRefreshing(false);
+    }
+
+    public void setConn(HRConnect c) {
+        this.conn = c;
     }
 
     public boolean isOnline () {

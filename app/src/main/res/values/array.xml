@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="MESI">
+    <string-array name="MESI">
         <item>Gennaio</item>
         <item>Febbraio</item>
         <item>Marzo</item>
@@ -15,7 +15,7 @@
         <item>Novembre</item>
         <item>Dicembre</item>
         <item>Tredicesima</item>
-    </array>
+    </string-array>
 
     <string-array name="TITOLICARD">
         <item>Notifiche</item>
@@ -28,14 +28,17 @@
         <item>Cambia password</item>
         <item>Scarica CUD</item>
         <item>Grafico Andamento</item>
-        <item>Excel Andamento</item>
     </string-array>
 
     <string-array name="TITOLIPAGER">
         <item>Stipendio</item>
-        <item>Ferie</item>
+        <!--<item>Ferie</item>
         <item>Banca ore</item>
-        <item>ROL</item>
+        <item>ROL</item>-->
+        <item>Ore</item>
+        <item>Ore</item>
+        <item>Ore</item>
+
     </string-array>
 
 

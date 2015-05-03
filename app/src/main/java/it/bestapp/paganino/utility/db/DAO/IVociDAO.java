@@ -2,7 +2,6 @@ package it.bestapp.paganino.utility.db.DAO;
 
 import java.util.List;
 
-import it.bestapp.paganino.utility.db.bin.Busta;
 import it.bestapp.paganino.utility.db.bin.Voci;
 
 /**

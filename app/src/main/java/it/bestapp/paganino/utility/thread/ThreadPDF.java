@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import it.bestapp.paganino.adapter.bustapaga.BustaPaga;
+import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
@@ -20,13 +20,13 @@ public class ThreadPDF extends AsyncTask<Void, Void, File> {
 
     private Fragment frag = null;
     private HRConnect con = null;
-    private BustaPaga bPaga = null;
+    private Busta bPaga = null;
     private PageDownloadedInterface pCall = null;
     private SingletonParametersBridge singleton;
     private String path;
     private char mode;
 
-    public ThreadPDF(Fragment f, HRConnect c, BustaPaga bP, char m) {
+    public ThreadPDF(Fragment f, HRConnect c, Busta bP, char m) {
         this.frag = f;
         this.mode = m;
         this.con = c;
