@@ -31,68 +31,92 @@
                     card_view:cardCornerRadius="4dp"
                     card_view:cardElevation="4dp">
 
-                    <TableLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <TableRow
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="5">
+
                             <com.gc.materialdesign.views.ButtonFlat
                                 xmlns:android="http://schemas.android.com/apk/res/android"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/notifica"
                                 android:text="@string/notiche"
-                                android:layout_gravity="center" />
+                                android:layout_gravity="center"
+                                android:layout_weight="0.5"/>
 
-                            <com.gc.materialdesign.views.Switch
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4.3" />
+
+
+                            <it.bestapp.paganino.view.Switch
                                 android:id="@+id/swNoti"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="#1E88E5" />
-                        </TableRow>
-                        <TableLayout
-                            xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:background="#1E88E5"
+                                android:layout_weight="0.2"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:id="@+id/subriga">
 
-                            <TableRow>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
                                 <com.gc.materialdesign.views.ButtonFlat
                                     xmlns:android="http://schemas.android.com/apk/res/android"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/notificaDate"
                                     android:text="@string/timer_giorno"
-                                    android:layout_weight="0"
                                     android:layout_gravity="center_vertical" />
+
+                                <LinearLayout
+                                    android:layout_width="182dp"
+                                    android:layout_height="wrap_content" />
                                 <TextView
                                     xmlns:android="http://schemas.android.com/apk/res/android"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/giorno"
-                                    android:layout_weight="1"/>
-                            </TableRow>
-                            <TableRow>
+                                    android:id="@+id/giorno"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
                                 <com.gc.materialdesign.views.ButtonFlat
                                     xmlns:android="http://schemas.android.com/apk/res/android"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/notificaTime"
                                     android:text="@string/timer_ora"
-                                    android:layout_weight="0"
+                                    android:layout_weight="1"
                                     android:layout_gravity="center_horizontal" />
 
+                                <LinearLayout
+                                    android:layout_width="174dp"
+                                    android:layout_height="wrap_content" />
                                 <TextView
                                     xmlns:android="http://schemas.android.com/apk/res/android"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/ora"
-                                    android:layout_weight="1"/>
-                            </TableRow>
-                        </TableLayout>
-                    </TableLayout>
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center_horizontal"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
             </FrameLayout>
 
@@ -150,11 +174,6 @@
             </FrameLayout>
 
 
-
-
-
-
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -186,7 +205,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:text="@string/sync"
                                 android:textStyle="bold" />
-                            <com.gc.materialdesign.views.Switch
+                            <it.bestapp.paganino.view.Switch
                                 android:id="@+id/setSync"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -207,7 +226,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:text="@string/drive"
                                 android:textStyle="bold" />
-                            <com.gc.materialdesign.views.Switch
+                            <it.bestapp.paganino.view.Switch
                                 android:id="@+id/setDrive"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -219,11 +238,6 @@
                     </TableLayout>
                 </android.support.v7.widget.CardView>
             </FrameLayout>
-
-
-
-
-
 
 
         </LinearLayout>

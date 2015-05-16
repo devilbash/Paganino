@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 
@@ -206,7 +207,7 @@ public class Lista extends Fragment
     @Override
     public void onResume(){
         super.onResume();
-        swpLstView.deferNotifyDataSetChanged();
+        adapter.updateReceiptsList();
     }
 
     @Override

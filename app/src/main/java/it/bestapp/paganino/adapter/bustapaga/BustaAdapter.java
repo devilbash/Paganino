@@ -221,4 +221,14 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 		return filter;
 	}
 
+
+	public void updateReceiptsList() {
+		List<Busta> newlist = new ArrayList(list);
+		list.clear();
+		list.addAll(newlist);
+		this.notifyDataSetChanged();
+	}
+
+
+
 }

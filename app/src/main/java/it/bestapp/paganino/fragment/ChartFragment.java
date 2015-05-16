@@ -27,16 +27,17 @@ public class ChartFragment extends Fragment {
     private String page;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+
     public static ChartFragment newInstance(int position) {
         ChartFragment fragment = new ChartFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, position);
         fragment.setArguments(args);
+
         return fragment;
     }
 
-    public ChartFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class ChartFragment extends Fragment {
         String [] titoli = act.getResources().getStringArray(R.array.TITOLIPAGER);
         page = titoli[position];
         page = page.replace(' ', '_');
+        if ( position > 0 ) {
+            page = "Ore";
+        }
 
         String tipo="";
         switch (position){
@@ -65,6 +69,7 @@ public class ChartFragment extends Fragment {
                 tipo="B";
                 break;
         }
+
         ora = busta.getOre().get(tipo);
     }
 
@@ -107,7 +112,6 @@ public class ChartFragment extends Fragment {
                                     + busta.getTotComp()  + " , " +
                                     + busta.getTotRit()   + " , " +
                                     + busta.getNetto()    + " ]" ;
-
                     wv.loadUrl("javascript:showPlot( \'" + jsonStr + "\' )");
                 }
             });
@@ -122,7 +126,6 @@ public class ChartFragment extends Fragment {
                                 + ora.getRes()  + " , " +
                                 + ora.getSpe()  + " , " +
                                 + ora.getGod()   ;
-
                     wv.loadUrl("javascript:showPlot( \'" + jsonStr + "\' )");
                 }
             });

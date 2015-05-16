@@ -1,4 +1,4 @@
-package it.bestapp.paganino.utility.drive;
+package it.bestapp.paganino.utility.baseactivity;
 
 
 import android.app.Activity;
@@ -32,7 +32,8 @@ import java.io.OutputStream;
 import it.bestapp.paganino.adapter.bustapaga.Busta;
 
 
-public abstract class BaseDriveActivity extends ActionBarActivity implements
+public abstract class DriveActivity extends GCMActivity
+        implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 

@@ -23,7 +23,6 @@
         <item>Salvataggio</item>
     </string-array>
 
-
     <string-array name="TITOLIMENU">
         <item>Cambia password</item>
         <item>Scarica CUD</item>
@@ -32,14 +31,9 @@
 
     <string-array name="TITOLIPAGER">
         <item>Stipendio</item>
-        <!--<item>Ferie</item>
+        <item>Ferie</item>
         <item>Banca ore</item>
-        <item>ROL</item>-->
-        <item>Ore</item>
-        <item>Ore</item>
-        <item>Ore</item>
-
+        <item>ROL</item>
     </string-array>
-
 
 </resources>

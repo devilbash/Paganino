@@ -1,7 +1,6 @@
 package it.bestapp.paganino;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,21 +10,17 @@ import android.support.v4.widget.DrawerLayout;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.util.ArrayList;
-import java.util.List;
 
-import it.bestapp.paganino.adapter.bustapaga.Busta;
-import it.bestapp.paganino.dialog.Login;
 import it.bestapp.paganino.dialog.SelectPeriod;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.fragment.NavigationDrawerFragment;
 import it.bestapp.paganino.utility.connessione.HRConnect;
-import it.bestapp.paganino.utility.drive.BaseDriveActivity;
+import it.bestapp.paganino.utility.baseactivity.DriveActivity;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
 
-public class Main extends BaseDriveActivity  //ActionBarActivity
+public class Main extends DriveActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final int REQUEST_CODE_SETTINGS = 0;

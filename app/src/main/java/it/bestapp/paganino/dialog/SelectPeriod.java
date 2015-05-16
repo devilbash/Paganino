@@ -38,10 +38,13 @@ public class SelectPeriod {
     private Integer last;
 
     public SelectPeriod(Main m,Lista lF,HRConnect c){
-        lista = lF.getAdapter().getList();
         this.act  =  m;
-        mesi = Arrays.asList(act.getResources().getStringArray(R.array.MESI));
         this.conn = c;
+        mesi = Arrays.asList(act.getResources().getStringArray(R.array.MESI));
+
+        lista = lF.getAdapter().getList();
+        first = 1;
+        last  = lista.size();
 
         MaterialDialog.Builder dBuilder =
                 new MaterialDialog.Builder(act)
@@ -84,7 +87,7 @@ public class SelectPeriod {
         rangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-                first = minValue;
+/*                first = minValue;
                 last  = maxValue;
 
                 minValue = Math.abs(lista.size() - minValue +1);
@@ -93,7 +96,18 @@ public class SelectPeriod {
                 anno1.setText(((Integer) (lista.get(minValue-1 ).getNumAnno())).toString());
                 mese1.setText((lista.get(minValue-1 )).getMese(act));
                 anno2.setText(((Integer) (lista.get(maxValue-1)).getNumAnno()).toString());
-                mese2.setText((lista.get(maxValue-1)).getMese(act));
+                mese2.setText((lista.get(maxValue-1)).getMese(act));*/
+
+                first = minValue;
+                last  = maxValue;
+
+                minValue = Math.abs(lista.size() - minValue);
+                maxValue = Math.abs(lista.size() - maxValue);
+
+                anno1.setText(((Integer) (lista.get(minValue ).getNumAnno())).toString());
+                mese1.setText((lista.get(minValue )).getMese(act));
+                anno2.setText(((Integer) (lista.get(maxValue)).getNumAnno()).toString());
+                mese2.setText((lista.get(maxValue)).getMese(act));
 
             }
         });
@@ -105,9 +119,9 @@ public class SelectPeriod {
         int r1 = lista.size() - last ;
         int r2  = lista.size() - first;
 
-       for(Busta b= lista.get(r1); r1<=r2;){
+       for(Busta b; r1<=r2; r1++){
+           b= lista.get(r1);
            range.add(b);
-           b= lista.get(++r1);
        }
         Collections.reverse(range);
         return range;

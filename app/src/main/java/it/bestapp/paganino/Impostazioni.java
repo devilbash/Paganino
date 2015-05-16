@@ -10,14 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.gc.materialdesign.views.ButtonFlat;
-import com.gc.materialdesign.views.Switch;
+//import com.gc.materialdesign.views.Switch;
+import it.bestapp.paganino.view.Switch;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
@@ -48,7 +51,7 @@ public class Impostazioni extends ActionBarActivity
     private ButtonFlat noti;
     private ButtonFlat time;
     private ButtonFlat date;
-    private TableLayout riga;
+    private LinearLayout riga;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,8 +73,8 @@ public class Impostazioni extends ActionBarActivity
 
 
 /*card notifica*/
-        final Switch swNoti = (Switch) findViewById(R.id.swNoti);
-        riga = (TableLayout) findViewById(R.id.subriga);
+        final Switch swNoti = (Switch ) findViewById(R.id.swNoti);
+        riga = (LinearLayout) findViewById(R.id.subriga);
 
 
         noti = (ButtonFlat) findViewById(R.id.notifica);
@@ -89,14 +92,19 @@ public class Impostazioni extends ActionBarActivity
                 }
             }
         });
+        swNoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         swNoti.setOncheckListener(new Switch.OnCheckListener() {
             @Override
             public void onCheck(boolean b) {
                 settings.setNotifica(b);
-                if (b){
+                if (b) {
                     riga.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     riga.setVisibility(View.GONE);
                 }
             }
@@ -107,6 +115,9 @@ public class Impostazioni extends ActionBarActivity
         }else{
             riga.setVisibility(View.GONE);
         }
+
+
+
 
 
         giornoV = (TextView) findViewById(R.id.giorno);

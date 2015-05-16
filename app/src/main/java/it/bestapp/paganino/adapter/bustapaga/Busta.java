@@ -93,5 +93,13 @@ public class Busta implements
     }
 
 
+    static public String getData(Activity a, String id) {
+        String idsplit = id.substring(2, 4);
+        String[] mesi = a.getResources().getStringArray(R.array.MESI);
+        return mesi[Integer.parseInt(idsplit)-1] +"-"+("20" + id.substring(0,2));
+    }
 
+    static public String getData( String id) {
+         return id.substring(2, 4) +"-"+ ("20" + id.substring(0,2));
+    }
 }

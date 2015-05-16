@@ -693,4 +693,5 @@ public class SwipeListView extends ListView {
     public void addSwipeRefresh(SwipeRefreshLayout swpRefresh) {
         touchListener.addSwipeRefresh(swpRefresh);
     }
+
 }
