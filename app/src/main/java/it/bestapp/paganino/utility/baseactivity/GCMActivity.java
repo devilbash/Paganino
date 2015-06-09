@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.setting.SettingsManager;
 
@@ -47,7 +48,7 @@ public class GCMActivity extends ActionBarActivity {
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private boolean notifica;
+
     private SettingsManager settings;
     /**
      * Substitute you own sender ID here. This is the project number you got
@@ -60,7 +61,7 @@ public class GCMActivity extends ActionBarActivity {
      */
     static final String TAG = "GCM Demo";
 
-    TextView mDisplay;
+
     GoogleCloudMessaging gcm;
     AtomicInteger msgId = new AtomicInteger();
     Context context;
@@ -74,13 +75,10 @@ public class GCMActivity extends ActionBarActivity {
 
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
-        notifica = settings.isNotifica();
-
-
+        settings = (SettingsManager) singleton.getParameter("settings", this);
 
         // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
-        if (checkPlayServices() && notifica) {
+        if (checkPlayServices() && settings.isSync() && Lista.isOnline( this ) ) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
 
@@ -96,7 +94,6 @@ public class GCMActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         // Check device for Play Services APK.
-        if (notifica)
         checkPlayServices();
     }
 
@@ -184,7 +181,7 @@ public class GCMActivity extends ActionBarActivity {
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
-                    sendRegistrationIdToBackend("http://192.168.1.134:8888/paganinoweb/register",regid);
+                    sendRegistrationIdToBackend("http://bestapp-paganino.appspot.com/paganinowebgae/register",regid);
 
                     // For this demo: we don't need to send it because the device will send
                     // upstream messages to a server that echo back the message using the

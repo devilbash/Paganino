@@ -168,8 +168,10 @@ public class NavigationDrawerFragment extends Fragment {
         super.onAttach(activity);
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = new SettingsManager( activity.getApplicationContext());
-        singleton.addParameter("settings",settings );
+        //settings = new SettingsManager( activity.getApplicationContext());
+        //singleton.addParameter("settings",settings );
+        settings = (SettingsManager) singleton.getParameter("settings",getActivity());
+
         menuList= new ArrayList<MenuItem>();
         initMenu(menuList);
         try {

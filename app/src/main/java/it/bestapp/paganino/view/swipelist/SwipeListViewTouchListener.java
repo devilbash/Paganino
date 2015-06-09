@@ -738,6 +738,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             viewWidth = swipeListView.getWidth();
         }
 
+        int viewPosition=0;
         switch (MotionEventCompat.getActionMasked(motionEvent)) {
             case MotionEvent.ACTION_DOWN: {
                 if (paused && downPosition != ListView.INVALID_POSITION) {
@@ -845,6 +846,27 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     break;
                 }
 
+// get position into view
+                int childCount = swipeListView.getChildCount();
+                int[] listViewCoords = new int[2];
+                swipeListView.getLocationOnScreen(listViewCoords);
+                int x = (int) motionEvent.getRawX() - listViewCoords[0];
+                int y = (int) motionEvent.getRawY() - listViewCoords[1];
+                View child;
+                for (int i = 0; i < childCount; i++) {
+                    child = swipeListView.getChildAt(i);
+                    child.getHitRect(rect);
+
+                    int childPosition = swipeListView.getPositionForView(child);
+
+                    // dont allow swiping if this is on the header or footer or IGNORE_ITEM_VIEW_TYPE or enabled is false on the adapter
+                    boolean allowSwipe = swipeListView.getAdapter().isEnabled(childPosition) && swipeListView.getAdapter().getItemViewType(childPosition) >= 0;
+                    if (allowSwipe && rect.contains(x, y)) {
+                        viewPosition = i;
+                    }
+                }
+
+
                 velocityTracker.addMovement(motionEvent);
                 velocityTracker.computeCurrentVelocity(1000);
                 float velocityX = Math.abs(velocityTracker.getXVelocity());
@@ -898,7 +920,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                         } else {
                             swipeCurrentAction = SwipeListView.SWIPE_ACTION_REVEAL;
                         }
-                        swipeListView.onStartOpen(downPosition, swipeCurrentAction, swipingRight);
+                        swipeListView.onStartOpen(viewPosition, downPosition, swipeCurrentAction, swipingRight);
                     }
                     swipeListView.requestDisallowInterceptTouchEvent(true);
                     MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);

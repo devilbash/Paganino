@@ -19,12 +19,12 @@
                 xmlns:swipe="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/swipList"
                 android:listSelector="#00000000"
+                swipe:swipeDrawableChecked="@drawable/choice_selected"
+                swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 swipe:swipeFrontView="@+id/front"
                 swipe:swipeBackView="@+id/back"
-                swipe:swipeDrawableChecked="@drawable/choice_selected"
-                swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
                 swipe:swipeCloseAllItemsWhenMoveList="true"
                 swipe:swipeMode="both" />
     </android.support.v4.widget.SwipeRefreshLayout>

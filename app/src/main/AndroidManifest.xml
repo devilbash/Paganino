@@ -60,11 +60,16 @@
         </activity>
 
         <activity
-            android:name=".Chart"
+            android:name=".ChartRange"
             android:screenOrientation="landscape"
             android:parentActivityName="it.bestapp.paganino.Main" >
         </activity>
 
+        <activity
+            android:name=".ChartConfronto"
+            android:screenOrientation="landscape"
+            android:parentActivityName="it.bestapp.paganino.Main" >
+        </activity>
 
         <receiver
             android:name=".utility.AutoStart">

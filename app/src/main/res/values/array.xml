@@ -32,8 +32,8 @@
     <string-array name="TITOLIPAGER">
         <item>Stipendio</item>
         <item>Ferie</item>
-        <item>Banca ore</item>
         <item>ROL</item>
+        <item>Banca ore</item>
     </string-array>
 
 </resources>

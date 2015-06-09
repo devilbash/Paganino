@@ -101,34 +101,43 @@ public class Lista extends Fragment
                     else
                         mode.finish();
                 }
+
                 @Override
                 public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.menu_confronta:
                             List<Integer> checked = swpLstView.getPositionsSelected();
-
+                            if (checked.size() != 2) {
+                                return true;
+                            }
                             List<Busta> buste = new ArrayList<Busta>();
-                            for (Integer i : checked)
+                            for (Integer i : checked) {
                                 buste.add(adapter.getItem(i));
+                            }
+                            (new ThreadStoreController((Main) _this.getActivity(), buste, conn, 'C')).execute();
 
-                        //    (new ThreadStoreController(_this, buste, conn)).execute();
-                            swpLstView.unselectedChoiceStates();
+                            swpLstView.clearChoices();
+                            ((BustaAdapter) swpLstView.getAdapter()).notifyDataSetChanged();
+
                             mode.finish();
-                            return true;
+                            return false;
                         default:
                             return false;
                     }
                 }
+
                 @Override
                 public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                     MenuInflater inflater = mode.getMenuInflater();
                     inflater.inflate(R.menu.swipe, menu);
                     return true;
                 }
+
                 @Override
                 public void onDestroyActionMode(ActionMode mode) {
                     swpLstView.unselectedChoiceStates();
                 }
+
                 @Override
                 public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                     return false;
@@ -283,7 +292,7 @@ public class Lista extends Fragment
 
     @Override
     public void onRefresh() {
-        if(isOnline()){
+        if(isOnline(getActivity())){
             (new ThreadHome(this, conn)).execute();
         }else{
             swpRefresh.setRefreshing(false);
@@ -304,8 +313,8 @@ public class Lista extends Fragment
         this.conn = c;
     }
 
-    public boolean isOnline () {
-        ConnectivityManager cm = ( ConnectivityManager ) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isOnline (Activity act) {
+        ConnectivityManager cm = ( ConnectivityManager ) act.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if(ni == null)
             return false;

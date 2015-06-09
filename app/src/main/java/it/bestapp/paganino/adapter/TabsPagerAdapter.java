@@ -3,6 +3,7 @@ package it.bestapp.paganino.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import java.util.Locale;
 
@@ -17,7 +18,7 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
 
     private Charts charts;
     private ChartFragment[] frags;
-
+    private ViewPager viewPager;
 
     public TabsPagerAdapter(Charts c, FragmentManager fm) {
         super(fm);
@@ -27,17 +28,24 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int index) {
-        if (frags[index] != null)
-            return frags[index];
-
-        frags[index] = ChartFragment.newInstance(index);
-        return frags[index];
+        ChartFragment frag;
+        if (frags[index] != null) {
+            frag = frags[index];
+        } else {
+            frag = frags[index] = ChartFragment.newInstance(index);
+        }
+        return frag;
     }
 
     @Override
     public int getCount() {
         return frags.length;
     }
+
+    public void setViewPager(ViewPager viewPager) {
+        this.viewPager = viewPager;
+    }
+
 
     @Override
     public CharSequence getPageTitle(int position) {

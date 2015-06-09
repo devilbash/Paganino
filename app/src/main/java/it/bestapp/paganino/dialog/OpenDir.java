@@ -28,7 +28,7 @@ public class OpenDir {
     public OpenDir(Activity a) {
         act = a;
         singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings",act);
 
         root = Environment.getExternalStorageDirectory().toString();
         getDir(root);

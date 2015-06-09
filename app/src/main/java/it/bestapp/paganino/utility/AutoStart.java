@@ -59,7 +59,7 @@ public class AutoStart extends BroadcastReceiver {
 		*/
 
 		SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-		settings = (SettingsManager) singleton.getParameter("settings");
+		settings = (SettingsManager) singleton.getParameter("settings",(Activity) ctxt);
 		int day = settings.getGiorno();
 		String ora = settings.getOra();
 

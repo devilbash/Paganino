@@ -18,6 +18,7 @@ import it.bestapp.paganino.fragment.NavigationDrawerFragment;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.baseactivity.DriveActivity;
 import it.bestapp.paganino.utility.setting.SettingsManager;
+import it.bestapp.paganino.utility.thread.ThreadCud;
 
 
 public class Main extends DriveActivity
@@ -45,7 +46,7 @@ public class Main extends DriveActivity
         }
 
         singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings", this);
 
 
 
@@ -77,7 +78,7 @@ public class Main extends DriveActivity
                 //cambio pswd
                 break;
             case 2:
-                //scarica cud
+                (new ThreadCud(this, conn)).execute();
                 break;
             case 3:
                 (new SelectPeriod(this, listaBP, conn)).show();

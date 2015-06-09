@@ -69,7 +69,7 @@ public class Impostazioni extends ActionBarActivity
         getSupportActionBar().setHomeButtonEnabled(true);
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings", _this);
 
 
 /*card notifica*/

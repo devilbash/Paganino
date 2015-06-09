@@ -370,9 +370,9 @@ public class SwipeListView extends ListView {
      * @param action   current action
      * @param right    to right
      */
-    protected void onStartOpen(int position, int action, boolean right) {
+    protected void onStartOpen(int viewPosition, int position, int action, boolean right) {
         if (swipeListViewListener != null && position != ListView.INVALID_POSITION) {
-            swipeListViewListener.onStartOpen(position, action, right);
+            swipeListViewListener.onStartOpen(viewPosition, position, action, right);
         }
     }
 

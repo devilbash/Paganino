@@ -44,7 +44,7 @@ public class ThreadAnaPDF extends AsyncTask<Void, Void, BustaPaga> {
 
         dataBA = new DataBaseAdapter(frag.getActivity().getBaseContext());
         singleton = SingletonParametersBridge.getInstance();
-        SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
+        SettingsManager settings = (SettingsManager) singleton.getParameter("settings",f.getActivity());
         path = settings.getPath();
         File file = new File(path);
         if (!file.exists())

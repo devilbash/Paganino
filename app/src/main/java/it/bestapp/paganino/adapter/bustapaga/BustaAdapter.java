@@ -40,7 +40,7 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings", act);
 
 
 	}
@@ -67,7 +67,6 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
         if (!settings.isDrive()){
             vHolder.nascondiDrive();
         }
-
 
 		return v;
 	}

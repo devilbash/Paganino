@@ -46,8 +46,8 @@ public class BaseSwipeListViewListener implements SwipeListViewListener {
     }
 
     @Override
-    public void onStartOpen(int position, int action, boolean right) {
-        View main = swpLstView.getChildAt(position);
+    public void onStartOpen(int viewPosition, int position, int action, boolean right) {
+        View main = swpLstView.getChildAt(viewPosition);
         View element;
 
         if (main ==null) return;

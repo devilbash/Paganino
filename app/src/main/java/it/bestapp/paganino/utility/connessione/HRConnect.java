@@ -56,7 +56,9 @@ public class HRConnect {
     public static String SERVER  = "https://www.accenturehrservices.it";
     public static String LOGIN   = "/login.aspx?ReturnUrl=%2facngroup%2fIndex.aspx";
     public static String LISTA   = "/Utility/LoadApp.aspx?appInd=/Services/Allazi/FoglioPagaOnline/Login.aspx&appNum=000";
+    public static String LIS_CUD = "/Utility/LoadApp.aspx?appInd=/Services/Allazi/cudOnline/Login.aspx&appNum=000";
     public static String BPAGA   = "/Services/Allazi/FoglioPagaOnline/Sito/Modulo.aspx?Tipo=S&Versione=A20<SOST>01&Az=ATS";
+    public static String CUD     = "/Services/Allazi/CUDONLINE/CUD/";
 
 
     private HttpsURLConnection conn;
@@ -185,7 +187,7 @@ public class HRConnect {
 
 
     public InputStream getPDF(String busta) throws Exception {
-        String link = BPAGA.replaceAll("<SOST>",busta);
+        String link = BPAGA.replaceAll("<SOST>", busta);
 
         URI obj = new URI(SERVER + link);
         HttpGet request = new HttpGet(obj);
@@ -204,4 +206,22 @@ public class HRConnect {
     }
 
 
+    public InputStream getCUD(String link) throws Exception {
+
+
+        URI obj = new URI(SERVER + CUD + link);
+        HttpGet request = new HttpGet(obj);
+        request.setHeader("Accept",	"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+        request.setHeader("Accept-Encoding", "gzip, deflate");
+        request.setHeader("Accept-Language", "it-IT,it;q=0.8,en-US;q=0.5,en;q=0.3");
+        request.setHeader("Cache-Control", "max-age=0");
+        request.setHeader("Connection", "keep-alive");
+        request.setHeader("Host", "www.accenturehrservices.it");
+        request.setHeader("User-Agent", USER_AGENT);
+
+        HttpResponse response = client.execute(request);
+        int responseCode = response.getStatusLine().getStatusCode();
+        InputStream in = response.getEntity().getContent();
+        return in;
+    }
 }

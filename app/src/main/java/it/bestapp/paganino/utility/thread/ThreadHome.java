@@ -16,7 +16,9 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 
 public class ThreadHome extends AsyncTask<Void, Void, String> {
 
@@ -32,12 +34,14 @@ public class ThreadHome extends AsyncTask<Void, Void, String> {
 
 
 
-    public ThreadHome( PageDownloadedInterface fL, HRConnect c) {
+    public ThreadHome( Fragment frag, HRConnect c) {
+        Activity act = frag.getActivity();
         this.con  = c;
-        this.callBack = fL;
+
+        this.callBack = (PageDownloadedInterface) frag;
 
         SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings",  act);
         this.user = settings.getUser();
         this.pswd = settings.getPaswd();
 

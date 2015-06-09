@@ -59,7 +59,7 @@ public class Login {
                                                 settings.setUser(mEmailView.getText().toString());
                                                 settings.setPaswd(mPasswordView.getText().toString());
                                             }
-                                            (new ThreadHome((PageDownloadedInterface) act, conn)).execute();
+                                            (new ThreadHome( frag, conn)).execute();
                                         }
                                         @Override
                                         public void onNegative(MaterialDialog dialog) {
@@ -72,7 +72,7 @@ public class Login {
         View view = dialog.getView();
 
         singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings");
+        settings = (SettingsManager) singleton.getParameter("settings",act);
 
         // Set up the login form.
         mEmailView = (EditText) view.findViewById(R.id.email);

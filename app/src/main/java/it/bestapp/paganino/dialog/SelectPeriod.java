@@ -1,8 +1,6 @@
 package it.bestapp.paganino.dialog;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -10,14 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import it.bestapp.paganino.Chart;
+
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.R;
 import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.connessione.HRConnect;
-import it.bestapp.paganino.utility.db.DataBaseAdapter;
-import it.bestapp.paganino.utility.db.bin.BustaPaga;
 import it.bestapp.paganino.utility.thread.ThreadStoreController;
 import it.bestapp.paganino.view.seekbar.RangeSeekBar;
 
@@ -57,7 +53,7 @@ public class SelectPeriod {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 ArrayList<Busta> range = componiLista();
-                                (new ThreadStoreController(act, range, conn  )).execute();
+                                (new ThreadStoreController(act, range, conn, 'R')).execute();
                             }
 
                             @Override

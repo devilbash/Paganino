@@ -37,7 +37,7 @@ public interface SwipeListViewListener {
      * @param action current action
      * @param right to right
      */
-    void onStartOpen(int position, int action, boolean right);
+    void onStartOpen(int viewPosition, int position, int action, boolean right);
 
     /**
      * Start close item

@@ -1,6 +1,10 @@
 package it.bestapp.paganino.utility;
 
+import android.app.Activity;
+
 import java.util.HashMap;
+
+import it.bestapp.paganino.utility.setting.SettingsManager;
 
 public class SingletonParametersBridge {
 	private static SingletonParametersBridge instance = null;
@@ -20,8 +24,13 @@ public class SingletonParametersBridge {
 		map.put(key, value);
 	}
 
-	public Object getParameter(String key) {
-		return map.get(key);
+	public Object getParameter(String key, Activity act) {
+		Object obj = map.get(key);
+		if (obj == null) {
+			obj = new SettingsManager( act.getApplicationContext());
+			addParameter(key, obj);
+		}
+		return obj;
 	}
 
 	public void removeParameter(String key) {

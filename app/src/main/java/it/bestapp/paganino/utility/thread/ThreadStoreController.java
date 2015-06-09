@@ -2,7 +2,6 @@ package it.bestapp.paganino.utility.thread;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
@@ -15,10 +14,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.bestapp.paganino.Chart;
+import it.bestapp.paganino.ChartConfronto;
+import it.bestapp.paganino.ChartRange;
 import it.bestapp.paganino.Main;
 import it.bestapp.paganino.adapter.bustapaga.Busta;
-import it.bestapp.paganino.fragment.Lista;
 import it.bestapp.paganino.utility.SingletonParametersBridge;
 import it.bestapp.paganino.utility.connessione.HRConnect;
 import it.bestapp.paganino.utility.connessione.PageDownloadedInterface;
@@ -41,16 +40,17 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
     private DataBaseAdapter dataBA;
     private ArrayList<BustaPaga> range;
     private Main act;
+    private char grafico ;
 
-
-    public ThreadStoreController(Main a, List<Busta> b, HRConnect c) {
+    public ThreadStoreController(Main a, List<Busta> b, HRConnect c,char g) {
         //this.frag  = f;
         this.conn  = c;
         //this.pCall = (PageDownloadedInterface) f;
         this.buste = b;
+        this.grafico = g;
         act = a;
         singleton = SingletonParametersBridge.getInstance();
-        SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
+        SettingsManager settings = (SettingsManager) singleton.getParameter("settings",act);
 
         range = new ArrayList<BustaPaga>();
         dataBA = new DataBaseAdapter(act);
@@ -130,8 +130,11 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void param) {
         //    pCall.procesDialog(false);
         //    pCall.onStoreCompleted(buste);
-
-        Intent intent = new Intent( act, Chart.class);
+        Intent intent = null;
+        if ( grafico == 'R' )
+            intent = new Intent( act, ChartRange.class);
+        else if(grafico == 'C')
+            intent = new Intent( act, ChartConfronto.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putParcelableArrayListExtra("BUSTE", range);
         act.startActivity(intent);

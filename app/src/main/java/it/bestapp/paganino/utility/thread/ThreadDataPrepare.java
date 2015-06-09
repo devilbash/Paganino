@@ -30,7 +30,7 @@ public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<Busta>> {
         this.callBack= (PageDownloadedInterface) f;
         this.conn = c;
         singleton = SingletonParametersBridge.getInstance();
-        SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
+        SettingsManager settings = (SettingsManager) singleton.getParameter("settings",act);
         dirPath = settings.getPath();
     }
 

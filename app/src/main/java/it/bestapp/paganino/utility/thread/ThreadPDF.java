@@ -35,7 +35,7 @@ public class ThreadPDF extends AsyncTask<Void, Void, File> {
 
 
         singleton = SingletonParametersBridge.getInstance();
-        SettingsManager settings = (SettingsManager) singleton.getParameter("settings");
+        SettingsManager settings = (SettingsManager) singleton.getParameter("settings",f.getActivity());
         path = settings.getPath();
         File file = new File(path);
         if (!file.exists())

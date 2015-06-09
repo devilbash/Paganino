@@ -15,7 +15,7 @@ import it.bestapp.paganino.adapter.bustapaga.Busta;
 import it.bestapp.paganino.utility.db.bin.BustaPaga;
 
 
-public class Chart extends ActionBarActivity {
+public class ChartRange extends ActionBarActivity {
 
     final Handler myHandler = new Handler();
     private WebView wv;
