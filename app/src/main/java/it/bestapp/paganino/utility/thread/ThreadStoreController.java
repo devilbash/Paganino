@@ -55,7 +55,7 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
         range = new ArrayList<BustaPaga>();
         dataBA = new DataBaseAdapter(act);
 
-        path = settings.getPath();
+        path = settings.getPath() + "/pdf" ;
         File file = new File(path);
         if (!file.exists())
             file.mkdirs();
@@ -74,16 +74,16 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
         File  f              = null;
         InputStream in       = null;
         FileOutputStream out = null;
-        BustaPaga bPaga = null;
+        BustaPaga bPaga      = null;
 
         dataBA.open();
-        for (Busta b : buste){
-            f = new File(path , b.getID() + ".pdf");
+        for (Busta busta : buste){
+            f = new File(path + "/pdf", busta.getID() + ".pdf");
             //se file non esiste: 1) scarico 2) scrivo 3) analizzo 4)salvo db
             if (!f.exists()) {
     //step 1-2
                 try {
-                    in = conn.getPDF( b.getID() );
+                    in = conn.getPDF( busta.getID() );
                     out = new FileOutputStream(f);
                     byte data[] = new byte[1024];
                     while ((count = in.read(data)) != -1)
@@ -96,10 +96,10 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
                 }
             }
 
-            bPaga = dataBA.getSingleBusta(b.getID());
+            bPaga = dataBA.getSingleBusta(busta.getID());
             if (bPaga == null) {
                 //step 3
-                BustaPagaParser bPP = null;
+                //BustaPagaParser bPP = null;
                 String txt = "";
                 try {
                     PdfReader reader = new PdfReader(f.getAbsolutePath());
@@ -112,8 +112,7 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
 
                     String tst = txt.replaceAll(" {2,}", " ");
                     String foglio[] = tst.split("\n");
-                    bPaga = BustaPagaParser.getBusta(foglio, b.getID());
-
+                    bPaga = BustaPagaParser.getBusta(foglio, busta);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -121,7 +120,6 @@ public class ThreadStoreController extends AsyncTask<Void, Void, Void> {
             }
             range.add(bPaga);
         }
-
         dataBA.close();
         return null;
     }

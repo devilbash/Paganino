@@ -48,10 +48,7 @@ public class Main extends DriveActivity
         singleton = SingletonParametersBridge.getInstance();
         settings = (SettingsManager) singleton.getParameter("settings", this);
 
-
-
         CookieHandler.setDefault(new CookieManager());
-
         conn = new HRConnect();
         listaBP = new Lista();
         listaBP.setConn(conn);
@@ -68,7 +65,6 @@ public class Main extends DriveActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout),
                 toolbar);
-
     }
 
     @Override

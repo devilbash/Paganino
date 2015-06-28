@@ -21,31 +21,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BustaAdapter extends BaseAdapter implements Filterable {
-
-    private Activity act;
-    private Lista frag;
-    private HRConnect conn;
-    private SettingsManager settings;
-    private static List<Busta> list;
-    private List<Integer> hiddenItem;
-	//private static PageDownloadedInterface callBackMain;
+	private Activity act;
+	private Lista frag;
+	private HRConnect conn;
+	private SettingsManager settings;
+	private static List<Busta> list;
+	private List<Integer> hiddenItem;
 
 	public BustaAdapter(Lista f, HRConnect c) {
 		act = f.getActivity();
-        frag = f;
-        conn = c;
-	//	callBackMain = (PageDownloadedInterface) a;
+		frag = f;
+		conn = c;
 		list = new ArrayList<Busta>();
 		hiddenItem = new ArrayList<Integer>();
 
 
-        SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-        settings = (SettingsManager) singleton.getParameter("settings", act);
+		SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
+		settings = (SettingsManager) singleton.getParameter("settings", act);
 
 
 	}
 
-	@Override 
+	@Override
 	public View getView(int position, View v, ViewGroup parent) {
 		ViewHolder vHolder;
 
@@ -64,10 +61,11 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 
 		Busta bPaga = (Busta) getItem(position);
 		vHolder.populate(bPaga, frag, conn);
-        if (!settings.isDrive()){
-            vHolder.nascondiDrive();
-        }
-
+		if (settings.isDrive()){
+			vHolder.driveShow(true);
+		} else{
+			vHolder.driveShow(false);
+		}
 		return v;
 	}
 
@@ -77,7 +75,7 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 		private ImageView scarica;
 		private ImageView grafico;
 		private ImageView excel;
-        private ImageView drive;
+		private ImageView drive;
 		private Activity act;
 
 		public ViewHolder(View convertView,Activity a) {
@@ -86,15 +84,18 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 			annoTextView = (TextView) convertView.findViewById(R.id.listAnno);
 
 
-            scarica = (ImageView) convertView.findViewById(R.id.imageScarica);
-            drive   = (ImageView) convertView.findViewById(R.id.imageDrive);
-            excel   = (ImageView) convertView.findViewById(R.id.imageExcel);
-            grafico = (ImageView) convertView.findViewById(R.id.imageGrafico);
+			scarica = (ImageView) convertView.findViewById(R.id.imageScarica);
+			drive   = (ImageView) convertView.findViewById(R.id.imageDrive);
+			excel   = (ImageView) convertView.findViewById(R.id.imageExcel);
+			grafico = (ImageView) convertView.findViewById(R.id.imageGrafico);
 		}
 
-        public void nascondiDrive(){
-            drive.setVisibility(View.GONE);
-        }
+		public void driveShow(boolean b){
+			if (b)
+				drive.setVisibility(View.VISIBLE);
+			else
+				drive.setVisibility(View.GONE);
+		}
 
 
 		public void populate(final Busta bPaga, final Lista frag, final HRConnect conn) {
@@ -102,31 +103,31 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 			annoTextView.setText(bPaga.getAnno());
 
 
-            scarica.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    (new ThreadPDF(frag, conn, bPaga, 'S')).execute();
-                }
-            });
+			scarica.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					(new ThreadPDF(frag, conn, bPaga, 'S')).execute();
+				}
+			});
 
-            excel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    (new ThreadAnaPDF(frag, conn, bPaga, 'E')).execute();
-                }
-            });
+			excel.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					(new ThreadAnaPDF(frag, conn, bPaga, 'E')).execute();
+				}
+			});
 
-            grafico.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    (new ThreadAnaPDF(frag, conn, bPaga, 'G')).execute();
-                }
-            });
+			grafico.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					(new ThreadAnaPDF(frag, conn, bPaga, 'G')).execute();
+				}
+			});
 
 			drive.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-                    (new ThreadPDF(frag, conn, bPaga, 'D')).execute();
+					(new ThreadPDF(frag, conn, bPaga, 'D')).execute();
 				}
 			});
 
@@ -193,7 +194,7 @@ public class BustaAdapter extends BaseAdapter implements Filterable {
 
 			@Override
 			protected void publishResults(CharSequence constraint,
-					FilterResults results) {
+										  FilterResults results) {
 				List<Busta> listaVisibili = null;
 				Busta p;
 				hiddenItem.clear();

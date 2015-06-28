@@ -20,6 +20,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import com.gc.materialdesign.views.ButtonFlat;
 //import com.gc.materialdesign.views.Switch;
+import it.bestapp.paganino.utility.AutoStart;
 import it.bestapp.paganino.view.Switch;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -116,10 +117,6 @@ public class Impostazioni extends ActionBarActivity
             riga.setVisibility(View.GONE);
         }
 
-
-
-
-
         giornoV = (TextView) findViewById(R.id.giorno);
         giornoV.setText( ((Integer)settings.getGiorno()).toString());
 
@@ -187,6 +184,7 @@ public class Impostazioni extends ActionBarActivity
         TextView pathV = (TextView) findViewById(R.id.path);
         pathV.setText(settings.getPath());
 
+
         ButtonFlat esci = (ButtonFlat) findViewById(R.id.esci);
         esci.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,13 +216,15 @@ public class Impostazioni extends ActionBarActivity
         ora = format.format(time);
         settings.setOra(ora);
         oraV.setText(ora);
+        AutoStart.scheduleAlarms(_this);
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         day = dayOfMonth;
         settings.setGiorno(day);
-        giornoV.setText(((Integer)day).toString());
+        giornoV.setText(((Integer) day).toString());
+        AutoStart.scheduleAlarms(_this);
     }
 
     private DatePickerDialog createDialogWithoutDateField() {

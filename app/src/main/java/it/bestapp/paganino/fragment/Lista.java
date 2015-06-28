@@ -2,6 +2,7 @@ package it.bestapp.paganino.fragment;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -27,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import java.io.File;
@@ -174,32 +176,41 @@ public class Lista extends Fragment
     @Override
     public void onPDFDownloaded(Busta bP, File f, char mode) {
         swpLstView.closeOpenedItems();
-
+        Intent intent;
         switch (mode) {
+            case 'S':
+            //scarica popup operazione conclusa
+                break;
             case 'V':   //visualizzo
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(f), "application/pdf");
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case 'S':   //scarica
-//popup operazione conclusa
-                break;
             case 'D':   //drive
                 ((Main) act).pushFile(f, bP);
                 break;
+            case 'E':   //excel
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(f), "application/vnd.ms-excel");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                try {
+                    startActivity(intent);
+                }
+                catch (ActivityNotFoundException e) {
+                    Toast.makeText(_this.getActivity(), "No Application Available to View Excel", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
+
     @Override
     public void onPDFDownloaded(BustaPaga b, char mode) {
         swpLstView.closeOpenedItems();
-
+        Intent intent;
         switch (mode) {
-            case 'E':   //excel
-
-                break;
             case 'G':   //grafico
-                Intent intent = new Intent( act, Charts.class);
+                intent = new Intent( act, Charts.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 Bundle extras = new Bundle();

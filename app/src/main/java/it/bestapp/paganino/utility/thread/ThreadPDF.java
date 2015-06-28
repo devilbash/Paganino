@@ -3,8 +3,6 @@ package it.bestapp.paganino.utility.thread;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -33,10 +31,9 @@ public class ThreadPDF extends AsyncTask<Void, Void, File> {
         this.bPaga = bP;
         this.pCall = (PageDownloadedInterface) f;
 
-
         singleton = SingletonParametersBridge.getInstance();
         SettingsManager settings = (SettingsManager) singleton.getParameter("settings",f.getActivity());
-        path = settings.getPath();
+        path = settings.getPath() + "/pdf";
         File file = new File(path);
         if (!file.exists())
             file.mkdirs();

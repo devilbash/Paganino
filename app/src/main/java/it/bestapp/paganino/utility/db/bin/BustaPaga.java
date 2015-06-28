@@ -22,6 +22,11 @@ public class BustaPaga implements Parcelable {
     private float  totComp;
     private float  netto;
 
+    private float  pereq;
+    private float  straOrd;
+    private float  trasf;
+
+
     private Map<String,Ore> ore;
     private List<Voci> voci;
 
@@ -39,21 +44,13 @@ public class BustaPaga implements Parcelable {
         this.id = id;
         ore = new HashMap();
     }
-/*
-    public Ore getOra(String tipo) {
-        return ore.get(tipo);
-    }
-    public void setOra(String tipo, Ore ore) {
-        this.ore.put(tipo,ore);
-    }
-*/
+
     public Map<String,Ore> getOre() {
         return ore;
     }
     public void setOre(Map<String,Ore> ore) {
         this.ore = ore;
     }
-
 
     public List<Voci> getVoci() {
         return voci;
@@ -111,6 +108,30 @@ public class BustaPaga implements Parcelable {
         this.netto = netto;
     }
 
+    public float getPereq() {
+        return pereq;
+    }
+
+    public void setPereq(float pereq) {
+        this.pereq = pereq;
+    }
+
+    public float getStraOrd() {
+        return straOrd;
+    }
+
+    public void setStraOrd(float stra) {
+        this.straOrd += stra;
+    }
+
+    public float getTrasf() {
+        return trasf;
+    }
+
+    public void setTrasf(float trasf) {
+        this.trasf = trasf;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -124,6 +145,10 @@ public class BustaPaga implements Parcelable {
         dest.writeFloat(totRit);
         dest.writeFloat(totComp);
         dest.writeFloat(netto);
+
+        dest.writeFloat(pereq);
+        dest.writeFloat(straOrd);
+        dest.writeFloat(trasf);
 
         writeOre(dest);
     }
@@ -153,7 +178,10 @@ public class BustaPaga implements Parcelable {
         totComp  = in.readFloat();
         netto    = in.readFloat();
 
-        //in.readTypedList(ore, Ore.CREATOR);
+        pereq    = in.readFloat();
+        straOrd  = in.readFloat();
+        trasf    = in.readFloat();
+
         readOre(in);
     }
 

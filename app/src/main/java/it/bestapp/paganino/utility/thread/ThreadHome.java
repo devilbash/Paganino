@@ -22,14 +22,12 @@ import android.support.v4.app.Fragment;
 
 public class ThreadHome extends AsyncTask<Void, Void, String> {
 
-    //private Activity act;
     private HRConnect con = null;
     private String user;
     private String pswd;
     private PageDownloadedInterface callBack = null;
     private ArrayList<Busta> lista = null;
     private boolean error;
-    private Login lDialog;
     private SettingsManager settings;
 
 

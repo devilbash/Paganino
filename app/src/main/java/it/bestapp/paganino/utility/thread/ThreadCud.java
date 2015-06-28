@@ -49,11 +49,10 @@ public class ThreadCud extends AsyncTask<Void, Void, File> {
 
 
         settings = (SettingsManager) singleton.getParameter("settings",act);
-        path = settings.getPath();
+        path = settings.getPath() + "/cud";
         File file = new File(path);
         if (!file.exists())
             file.mkdirs();
-
 
         this.user = settings.getUser();
         this.pswd = settings.getPaswd();
@@ -69,7 +68,6 @@ public class ThreadCud extends AsyncTask<Void, Void, File> {
         error = true;
         if (user.equalsIgnoreCase("") || pswd.equalsIgnoreCase(""))
             return f;
-
 
         try {
             page = con.GetPageContent(con.LOGIN);

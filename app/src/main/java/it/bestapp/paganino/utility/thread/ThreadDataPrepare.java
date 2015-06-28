@@ -31,7 +31,7 @@ public class ThreadDataPrepare extends AsyncTask<Void, Void, ArrayList<Busta>> {
         this.conn = c;
         singleton = SingletonParametersBridge.getInstance();
         SettingsManager settings = (SettingsManager) singleton.getParameter("settings",act);
-        dirPath = settings.getPath();
+        dirPath = settings.getPath() + "/pdf";
     }
 
     @Override

@@ -23,7 +23,7 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
 
 
     static final String DATABASE_NAME = "paganino.db";
-    public static final int DATABASE_VERSION = 7 ;
+    public static final int DATABASE_VERSION = 8 ;
 
 
     // SQL Statement to create a new database.
@@ -38,6 +38,9 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
                     + "TOTRIT "     + "REAL, "
                     + "TOTCOMP "	+ "REAL, "
                     + "NETTO "	    + "REAL "
+                    + "PEREQ "	    + "REAL "
+                    + "STRAORD "	+ "REAL "
+                    + "TRASF "	    + "REAL "
                     + ");",
             "create table "
                     + "BUSTA_ORE "  + "( "
@@ -100,6 +103,13 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
         newValues.put("TOTRIT",    b.getTotRit());
         newValues.put("TOTCOMP",   b.getTotComp());
         newValues.put("NETTO",     b.getNetto());
+
+        newValues.put("PEREQ",     b.getPereq());
+        newValues.put("STRAORD",   b.getStraOrd());
+        newValues.put("TRASF",     b.getTrasf());
+
+
+
         // Insert the row into your table
         db.insert("BUSTA_PAGA", null, newValues);
 
@@ -122,6 +132,12 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
                     busta.setTotRit(c.getFloat(c.getColumnIndex("TOTRIT")));
                     busta.setTotComp(c.getFloat(c.getColumnIndex("TOTCOMP")));
                     busta.setNetto(c.getFloat(c.getColumnIndex("NETTO")));
+
+                    busta.setPereq(c.getFloat(c.getColumnIndex("PEREQ")));
+                    busta.setStraOrd(c.getFloat(c.getColumnIndex("STRAORD")));
+                    busta.setTrasf(c.getFloat(c.getColumnIndex("TRASF")));
+
+
                     busta.setOre(getSingleOre(busta.getId()));
                 } while (c.moveToNext());
             }
@@ -146,6 +162,12 @@ public class DataBaseAdapter implements IBustaDAO, IOreDAO, IVociDAO {
                     busta.setTotRit(c.getFloat(c.getColumnIndex("TOTRIT")));
                     busta.setTotComp(c.getFloat(c.getColumnIndex("TOTCOMP")));
                     busta.setNetto(c.getFloat(c.getColumnIndex("NETTO")));
+
+                    busta.setPereq(c.getFloat(c.getColumnIndex("PEREQ")));
+                    busta.setStraOrd(c.getFloat(c.getColumnIndex("STRAORD")));
+                    busta.setTrasf(c.getFloat(c.getColumnIndex("TRASF")));
+
+
                     busta.setOre(getSingleOre(busta.getId()));
                     list.add(busta);
                 } while (c.moveToNext());

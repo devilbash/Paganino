@@ -28,10 +28,6 @@ public class AutoStart extends BroadcastReceiver {
 	private HashMap<Integer, String> config = null;
 	private Notifica notifica = new Notifica();
 
-	private SettingsManager settings;
-
-
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction() != null)
@@ -42,7 +38,7 @@ public class AutoStart extends BroadcastReceiver {
 	}
 	
 	
-	public void scheduleAlarms(Context ctxt) {
+	public  static void scheduleAlarms(Context ctxt) {
 		/*
 		 * Devo recuperare dal db l'ora di avvio della notifica/archiviazione
 		 * trasformarlo in millisecondi e preparare il service che scatterà
@@ -59,7 +55,7 @@ public class AutoStart extends BroadcastReceiver {
 		*/
 
 		SingletonParametersBridge singleton = SingletonParametersBridge.getInstance();
-		settings = (SettingsManager) singleton.getParameter("settings",(Activity) ctxt);
+		SettingsManager settings = (SettingsManager) singleton.getParameter("settings",(Activity) ctxt);
 		int day = settings.getGiorno();
 		String ora = settings.getOra();
 
@@ -73,7 +69,7 @@ public class AutoStart extends BroadcastReceiver {
 		/*
 		 *inserire condizione della notifica per il giorno stesso dell'avviso
 		 *se gia suonato non deve suonare più 
-		 * */
+		 */
 		
 		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
 				day,
